@@ -17,13 +17,13 @@ const subtraction = sub(number1, number2);
 
 const division = div(number1, number2);
 
-const csvHeader = "Operation,result\n";
+const csvHeader = "Operation,Num1,Num2,result\n";
 
 const csvRows = [
-  `Add,${addition}`,
-  `Sub,${subtraction}`,
-  `Mult,${multiplication}`,
-  `Div,${division}`,
+  `Addition,${number1},${number2},${addition}`,
+  `Subtraction,${number1},${number2},${subtraction}`,
+  `Multiplication,${number1},${number2},${multiplication}`,
+  `Division,${number1},${number2},${division}`,
 ];
 
 const csvContent = csvHeader + csvRows.join("\n");
