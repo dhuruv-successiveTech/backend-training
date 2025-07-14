@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
-import { mockData } from "./assignment-2/mockData";
+import { mockData } from "./utils/mockData";
 
 interface MockdataInterface {
   name: string;
