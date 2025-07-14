@@ -1,5 +1,5 @@
-import express from "express";
-import cookieParser from "cookie-parser"
+import express, { Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import { mockData } from "./assignment-2/mockData";
 
 interface MockdataInterface {
@@ -10,13 +10,16 @@ interface MockdataInterface {
 
 const app = express();
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 const data: MockdataInterface[] = mockData;
 const port = 3000;
 
-app.get("/", (req, res) => {
-  res.send(data);
+app.get("/user", (req: Request, res: Response) => {
+  res.status(200).json({
+    data: data,
+    success: true,
+  });
 });
 
 app.listen(port, () => {
