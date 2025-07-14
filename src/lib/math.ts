@@ -18,3 +18,4 @@ const div = (num1:number, num2:number) => {
 };
 
 export { add, sub, mult, div };
+ 
