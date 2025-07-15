@@ -7,7 +7,7 @@ const error = (
   next: NextFunction
 ) => {
   const status = err.statusCode || 500;
-  res.status(status).json({
+  return res.status(status).json({
     message: err.message,
     status: false,
   });

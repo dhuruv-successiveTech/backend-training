@@ -14,16 +14,13 @@ interface MockdataInterface {
   company: string;
 }
 
-
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(customHeader)
-app.use(rateLimiter(4,10000))
+app.use(customHeader);
+app.use(rateLimiter(4, 25000));
 
 const data: MockdataInterface[] = mockData;
-
 
 app.get("/user", (req: Request, res: Response) => {
   res.status(200).json({
