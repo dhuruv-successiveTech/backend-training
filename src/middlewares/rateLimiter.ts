@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 const rateLimiter = (requestLimit: number, timeLimit: number) => {
   const reqObj = new Map();
   return (req: Request, res: Response, next: NextFunction) => {
-    const ip = req.ip;
+    const ip = req?.ip;
     if (!reqObj.has(ip)) {
       reqObj.set(ip, { count: 1, previousTime: Date.now() });
     }
