@@ -31,7 +31,7 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use(validation(userSchema));
+
 
 app.use("/api", router);
 
