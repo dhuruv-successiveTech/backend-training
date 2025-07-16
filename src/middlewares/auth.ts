@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { secretKey } from "../config/config";
 
 export const authMiddleware = (
   req: Request & { user?: string | jwt.JwtPayload },
@@ -7,7 +8,6 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   const token = req.headers.authorization;
-  const secretKey = process.env.secretKey || "";
 
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
@@ -19,6 +19,5 @@ export const authMiddleware = (
     next();
   } catch (error) {
     next(error);
-    return res.status(401).json({ message: "Invalid token" });
   }
 };
