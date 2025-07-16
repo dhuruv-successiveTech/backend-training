@@ -2,7 +2,7 @@ import express from "express";
 
 import { authMiddleware } from "../middlewares/auth";
 import { login, register, user } from "../controllers/user";
-import { info } from "../controllers/dataSeed";
+import { info } from "../controllers/userInfo";
 import { loggerMiddleware } from "../middlewares/logger";
 
 const router = express.Router();
