@@ -5,14 +5,14 @@ import { login, register, user } from "../controllers/user";
 import { info } from "../controllers/dataSeed";
 import { loggerMiddleware } from "../middlewares/logger";
 import { validation } from "../middlewares/validation";
-import { userSchema } from "../utils/userSchema";
+import { loginSchema, registerSchema } from "../utils/userSchema";
 
 const router = express.Router();
 
-router.post("/user/login", login);
+router.post("/user/login", validation(loginSchema), login);
 router.get("/user", authMiddleware, user);
 router.post("/user/info", loggerMiddleware, info);
-router.post("/user/register", register);
+router.post("/user/register", validation(registerSchema), register);
 
 // middleware chaining
 

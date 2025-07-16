@@ -6,8 +6,6 @@ import { router } from "./routes/user";
 import { error } from "./middlewares/error";
 import { customHeader } from "./middlewares/customHeader";
 import { rateLimiter } from "./middlewares/rateLimiter";
-import { userSchema } from "./utils/userSchema";
-import { validation } from "./middlewares/validation";
 import { port } from "./config/config";
 
 interface MockdataInterface {
