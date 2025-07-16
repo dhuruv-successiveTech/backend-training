@@ -50,7 +50,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         userName,
       },
       secretKey,
-      { expiresIn: "1h" }
+      { expiresIn: "5h" }
     );
     return res.status(201).json({
       message: "user logged in",

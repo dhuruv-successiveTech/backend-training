@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { dataSeedFunction } from "../services/userData";
 
-const dataSeed = (req: Request, res: Response, next: NextFunction) => {
+const info = (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = dataSeedFunction();
     res.json({
@@ -12,4 +12,4 @@ const dataSeed = (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
-export { dataSeed };
+export { info };
