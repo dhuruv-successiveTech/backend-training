@@ -6,7 +6,7 @@ const querySchema = Joi.number().required();
 const queryValidator = (req: Request, res: Response, next: NextFunction) => {
   const param = req.params.id;
   const { error } = querySchema.validate(param);
-  if (error) {
+  if (req.params.id && error) {
     next(error);
   } else {
     next();

@@ -9,7 +9,7 @@ Validations are critical in ensuring that input received from users is clean, se
 ## 🚨 Why Validations Matter in Security
 
 ### 1. **Preventing Injection Attacks**
-- **SQL Injection**, **NoSQL Injection**, and **Command Injection** rely on unsanitized input.
+
 - Validations restrict inputs to expected formats and types, effectively neutralizing injection vectors.
 
 ### 2. **Preventing XSS (Cross-site Scripting)**

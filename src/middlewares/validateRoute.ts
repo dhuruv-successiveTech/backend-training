@@ -1,23 +1,24 @@
-import Joi from "joi";
 import { validationRules } from "../config/validation";
 import { NextFunction, Request, Response } from "express";
 
-
-export const valiationRoute = (req: Request, res: Response, next: NextFunction) => {
+export const validateRoute = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const route = req.originalUrl;
 
   const reqMethod = req.method.toLowerCase();
 
   const rules = validationRules[route];
-  
+
   if (!rules) {
-    next();
+    return next();
   }
 
-  const schema = rules[reqMethod as 'post' | 'get'] || {};
-  
-  if (schema.body) {    
-    
+  const schema = rules[reqMethod as "post" | "get"] || {};
+
+  if (schema.body) {
     const { error } = schema.body.validate(req.body);
     if (error) {
       return next(error);
@@ -33,8 +34,8 @@ export const valiationRoute = (req: Request, res: Response, next: NextFunction) 
 
   if (schema.query) {
     const { error } = schema.query.validate(req.query);
-    if(error){
-        return next(error)
+    if (error) {
+      return next(error);
     }
   }
   next();

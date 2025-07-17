@@ -1,24 +1,25 @@
 import express from "express";
 
-import { authMiddleware } from "../middlewares/auth";
-import { login, register, user } from "../controllers/user";
-import { info } from "../controllers/dataSeed";
-import { loggerMiddleware } from "../middlewares/logger";
-import { validation } from "../middlewares/validation";
-import { loginSchema, registerSchema } from "../utils/userSchema";
-import { queryValidator } from "../middlewares/queryValidator";
-import { geoLocation } from "../middlewares/geoLocation";
+import { authMiddleware } from "../middlewares";
+import { login, register, user } from "../controllers";
+import { info } from "../controllers";
+import { loggerMiddleware } from "../middlewares";
+import { validation } from "../middlewares";
+import { loginSchema, registerSchema } from "../utils";
+import { queryValidator } from "../middlewares";
+import { geoLocation } from "../middlewares";
 
 const router = express.Router();
 
-router.post("/user/login", validation(loginSchema), login);
-router.get("/user", authMiddleware, user);
-router.post("/user/info", loggerMiddleware, info);
-router.post("/user/register", validation(registerSchema), register);
-router.post("/user/:id", queryValidator, geoLocation("IN"), info);
+router.post("/login", validation(loginSchema), login);
+router.get("/", authMiddleware, user);
+router.post("/info", loggerMiddleware, info);
+router.post("/register", validation(registerSchema), register);
 
 // middleware chaining
 
-router.post("/user/dashboard", loggerMiddleware, authMiddleware, user);
+router.post("/dashboard", loggerMiddleware, authMiddleware, user);
+router.post("/:id", queryValidator, geoLocation("IN"), info);
+
 
 export { router };
