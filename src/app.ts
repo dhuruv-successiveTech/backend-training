@@ -33,6 +33,11 @@ app.use("/api/user", router);
 
 app.use(error);
 
+app.use((req, res) => {
+  res.status(404);
+  res.send("File not found");
+});
+
 app.listen(port, () => {
   console.log(`server listening at http://localhost:${port}`);
 });
