@@ -63,14 +63,20 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { userName, password } = req.body;
+    const { userName, password, email, gender, mobile } = req.body;
 
     const existing = users.find((user) => user.userName === userName);
     if (existing) {
       return res.status(400).json({ message: "user already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { userName, password: hashedPassword };
+    const newUser = {
+      userName,
+      password: hashedPassword,
+      email,
+      gender,
+      mobile,
+    };
     users.push(newUser);
 
     return res
