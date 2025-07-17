@@ -1,11 +1,11 @@
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
-import { mockData } from "./utils/mockData";
+import { mockData } from "./utils";
 import { router } from "./routes/user";
 
-import { error } from "./middlewares/error";
-import { customHeader } from "./middlewares/customHeader";
-import { rateLimiter } from "./middlewares/rateLimiter";
+import { error } from "./middlewares";
+import { customHeader } from "./middlewares";
+import { rateLimiter } from "./middlewares";
 import { port } from "./config/config";
 
 interface MockdataInterface {
@@ -29,7 +29,7 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api", router);
+app.use("/api/user", router);
 
 app.use(error);
 
