@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
-import { router } from "./routes";
+import { router } from "./route";
 
 import { error } from "./middlewares";
 import { customHeader } from "./middlewares";
