@@ -1,1 +1,84 @@
- 
+import { NextFunction, Request, Response } from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { secretKey } from "../config/config";
+
+interface userInterface {
+  password: string;
+  userName: string;
+}
+
+const user = (
+  req: Request & { user?: userInterface },
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (req.user) {
+      res.status(200).json({
+        data: req.user,
+        message: "User Data",
+      });
+    } else {
+      res.status(401).json({
+        message: "User Unauthorised",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const users: userInterface[] = [];
+
+const login = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userName, password } = req.body;
+
+    const existing = users.find((user) => user.userName === userName);
+
+    if (!existing) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    const passwordVerify = await bcrypt.compare(password, existing.password);
+    if (!passwordVerify) {
+      return res.status(400).json({ message: "passowrd do not match" });
+    }
+
+    const token = jwt.sign(
+      {
+        userName,
+      },
+      secretKey,
+      { expiresIn: "5h" }
+    );
+    return res.status(201).json({
+      message: "user logged in",
+      token: token,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const register = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userName, password } = req.body;
+
+    const existing = users.find((user) => user.userName === userName);
+    if (existing) {
+      return res.status(400).json({ message: "user already exists" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = { userName, password: hashedPassword };
+    users.push(newUser);
+
+    return res
+      .status(201)
+      .json({ success: true, message: "user registered successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { user, login, register };
