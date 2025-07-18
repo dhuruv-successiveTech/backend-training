@@ -19,7 +19,7 @@ router.post("/register", validation(registerSchema), register);
 // middleware chaining
 
 router.post("/dashboard", loggerMiddleware, authMiddleware, user);
-router.post("/:id", queryValidator, geoLocation("IN"), info);
+router.post("/info/:id", queryValidator, geoLocation("IN"), info);
 
 
 export { router };
