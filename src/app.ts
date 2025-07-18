@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
-import { router } from "./routes/user";
+import { router } from "./routes";
 
 import { error } from "./middlewares";
 import { customHeader } from "./middlewares";
@@ -29,7 +29,7 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api/user", router);
+app.use("/api", router);
 
 app.use(error);
 
