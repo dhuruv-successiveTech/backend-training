@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(customHeader);
 app.use(rateLimiter(4, 25000));
-// app.use(validateRoute);
+app.use(validateRoute);
 
 const data: MockdataInterface[] = mockData;
 
