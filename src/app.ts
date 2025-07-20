@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
 import { router } from "./route";
 import createError from "http-errors";
+
 import { error } from "./middlewares";
 import { customHeader } from "./middlewares";
 import { rateLimiter } from "./middlewares";
@@ -37,6 +38,8 @@ app.get("/user", (req: Request, res: Response) => {
 });
 
 app.use("/api", router);
+
+app.use(error);
 
 app.use((req, res, next) => {
   next(createError(404, "Route Not Found"));
