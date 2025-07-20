@@ -36,7 +36,7 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api/user", router);
+app.use("/api", router);
 
 app.use(error);
 
