@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
 import { router } from "./route";
-
+import createError from "http-errors";
 import { error } from "./middlewares";
 import { customHeader } from "./middlewares";
 import { rateLimiter } from "./middlewares";
@@ -36,14 +36,13 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api/user", router);
+app.use("/api", router);
+
+app.use((req, res, next) => {
+  next(createError(404, "Route Not Found"));
+});
 
 app.use(error);
-
-app.use((req, res) => {
-  res.status(404);
-  res.send("File not found");
-});
 
 app.listen(port, () => {
   console.log(`server listening at http://localhost:${port}`);

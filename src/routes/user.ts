@@ -8,6 +8,7 @@ import { validation } from "../middlewares";
 import { loginSchema, registerSchema } from "../utils";
 import { queryValidator } from "../middlewares";
 import { geoLocation } from "../middlewares";
+import Joi from "joi";
 
 const userRoute = express.Router();
 
@@ -21,5 +22,28 @@ userRoute.post("/register", validation(registerSchema), register);
 userRoute.post("/dashboard", loggerMiddleware, authMiddleware, user);
 userRoute.post("/info/:id", queryValidator, geoLocation("IN"), info);
 
+// request with parameter
+
+const userDetails = Joi.object({
+  name: Joi.string().min(2).required(),
+  age: Joi.number().integer().min(18).max(80).required(),
+  email: Joi.string().email().required(),
+});
+
+userRoute.post("/details", (req, res, next) => {
+  const { error } = userDetails.validate(req.body);
+  if (req.body) {
+    if (error) {
+      next(error);
+    } else {
+      return res.json({
+        message: "User details received successfully",
+        user: req.body,
+      });
+    }
+  } else {
+    next(new Error("req.body not found"));
+  }
+});
 
 export { userRoute };
