@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
-import { router } from "./routes/user";
+import { router } from "./route";
 
 import { error } from "./middlewares";
 import { customHeader } from "./middlewares";
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(customHeader);
 app.use(rateLimiter(4, 25000));
-// app.use(validateRoute);
+app.use(validateRoute);
 
 const data: MockdataInterface[] = mockData;
 
