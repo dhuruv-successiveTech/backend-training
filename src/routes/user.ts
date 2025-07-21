@@ -1,17 +1,15 @@
 import express from "express";
 
-import { authMiddleware } from "../middlewares";
-import { login, register, user } from "../controllers";
-import { info } from "../controllers";
+import { login, register, user, info } from "../controllers";
 import {
   loggerMiddleware,
-  geoLocation,
-  queryValidator,
   validation,
+  queryValidator,
+  geoLocation,
+  authMiddleware,
 } from "../middlewares";
 import { loginSchema, registerSchema } from "../utils";
-
-import Joi from "joi";
+import Joi from "joi"
 
 const userRoute = express.Router();
 
