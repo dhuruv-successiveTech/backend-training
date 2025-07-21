@@ -9,6 +9,7 @@ const info = (req: Request, res: Response, next: NextFunction) => {
       data,
     });
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };

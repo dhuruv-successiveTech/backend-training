@@ -1,19 +1,25 @@
 import express from "express";
 
-import { authMiddleware } from "../middlewares";
-import { login, register, user } from "../controllers";
-import { info } from "../controllers";
-import { loggerMiddleware } from "../middlewares";
+import { login, register, user, info } from "../controllers";
+import {
+  loggerMiddleware,
+  validation,
+  queryValidator,
+  geoLocation,
+  authMiddleware,
+} from "../middlewares";
+import { loginSchema, registerSchema } from "../utils";
 
-export const userRoute = express.Router();
+const userRoute = express.Router();
 
-userRoute.post("/login", login);
+userRoute.post("/login", validation(loginSchema), login);
 userRoute.get("/", authMiddleware, user);
 userRoute.post("/info", loggerMiddleware, info);
-userRoute.post("/register", register);
+userRoute.post("/register", validation(registerSchema), register);
 
 // middleware chaining
 
 userRoute.post("/dashboard", loggerMiddleware, authMiddleware, user);
+userRoute.post("/info/:id", queryValidator, geoLocation("IN"), info);
 
-
+export { userRoute };

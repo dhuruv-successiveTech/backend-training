@@ -2,11 +2,8 @@ import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
 import { router } from "./route";
-
-import { error } from "./middlewares";
-import { customHeader } from "./middlewares";
-import { rateLimiter } from "./middlewares";
-import { port } from "./config/config";
+import { error, customHeader, rateLimiter } from "./middlewares";
+import { config } from "./config/config";
 
 interface MockdataInterface {
   name: string;
@@ -15,6 +12,13 @@ interface MockdataInterface {
 }
 
 const app = express();
+app.enable("trust proxy");
+
+app.use((req, res, next) => {
+  req.headers["x-forwarded-for"] = "49.249.117.102";
+  next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(customHeader);
@@ -38,6 +42,6 @@ app.use((req, res) => {
   res.send("File not found");
 });
 
-app.listen(port, () => {
-  console.log(`server listening at http://localhost:${port}`);
+app.listen(config.port, () => {
+  console.log(`server listening at http://localhost:${config.port}`);
 });

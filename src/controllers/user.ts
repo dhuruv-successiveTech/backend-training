@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { secretKey } from "../config/config";
+import { config } from "../config/config";
 
 interface userInterface {
   password: string;
@@ -49,7 +49,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       {
         userName,
       },
-      secretKey,
+      config.secretKey,
       { expiresIn: "5h" }
     );
     return res.status(201).json({
@@ -57,20 +57,27 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       token: token,
     });
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { userName, password } = req.body;
+    const { userName, password, email, gender, mobile } = req.body;
 
     const existing = users.find((user) => user.userName === userName);
     if (existing) {
       return res.status(400).json({ message: "user already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { userName, password: hashedPassword };
+    const newUser = {
+      userName,
+      password: hashedPassword,
+      email,
+      gender,
+      mobile,
+    };
     users.push(newUser);
 
     return res
