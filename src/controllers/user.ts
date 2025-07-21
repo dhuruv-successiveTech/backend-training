@@ -57,6 +57,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       token: token,
     });
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
