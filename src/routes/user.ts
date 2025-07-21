@@ -3,11 +3,14 @@ import express from "express";
 import { authMiddleware } from "../middlewares";
 import { login, register, user } from "../controllers";
 import { info } from "../controllers";
-import { loggerMiddleware } from "../middlewares";
-import { validation } from "../middlewares";
+import {
+  loggerMiddleware,
+  geoLocation,
+  queryValidator,
+  validation,
+} from "../middlewares";
 import { loginSchema, registerSchema } from "../utils";
-import { queryValidator } from "../middlewares";
-import { geoLocation } from "../middlewares";
+
 import Joi from "joi";
 
 const userRoute = express.Router();
