@@ -14,10 +14,12 @@ interface MockdataInterface {
 
 const app = express();
 app.enable("trust proxy");
+
 app.use((req, res, next) => {
   req.headers["x-forwarded-for"] = "49.249.117.102";
   next();
 });
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(customHeader);
@@ -33,8 +35,6 @@ app.get("/user", (req: Request, res: Response) => {
 });
 
 app.use("/api", router);
-
-app.use(error);
 
 app.use((req, res, next) => {
   next(createError(404, "Route Not Found"));
