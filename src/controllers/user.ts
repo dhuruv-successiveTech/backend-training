@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { secretKey } from "../config/config";
+import { config } from "../config/config";
 
 interface userInterface {
   password: string;
@@ -49,7 +49,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       {
         userName,
       },
-      secretKey,
+      config.secretKey,
       { expiresIn: "5h" }
     );
     return res.status(201).json({
