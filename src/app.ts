@@ -5,6 +5,7 @@ import { router } from "./route";
 import createError from "http-errors";
 import { ApiError, Header, Limiter } from "./middlewares";
 import { config } from "./config/config";
+import { dbConnect } from "./config/dbConnect";
 
 interface MockdataInterface {
   name: string;
@@ -14,6 +15,8 @@ interface MockdataInterface {
 
 const app = express();
 app.enable("trust proxy");
+
+dbConnect();
 
 app.use((req, res, next) => {
   req.headers["x-forwarded-for"] = "49.249.117.102";
