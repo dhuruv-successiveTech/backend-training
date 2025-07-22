@@ -1,7 +1,16 @@
 import Joi from "joi";
 
-export class userSchema {
-  public static registerSchema = Joi.object({
+export class UserSchema {
+  private static instance: UserSchema;
+
+  public static getInstance(): UserSchema {
+    if (!UserSchema.instance) {
+      UserSchema.instance = new UserSchema();
+    }
+    return UserSchema.instance;
+  }
+
+  public registerSchema = Joi.object({
     userName: Joi.string().alphanum().min(3).max(30).required(),
     email: Joi.string().email().required(),
     phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
@@ -11,7 +20,7 @@ export class userSchema {
       .required(),
   });
 
-  public static loginSchema = Joi.object({
+  public loginSchema = Joi.object({
     userName: Joi.string().alphanum().min(3).max(30).required(),
     email: Joi.string().email().required(),
     password: Joi.string()

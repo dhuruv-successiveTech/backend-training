@@ -1,9 +1,19 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
+import { LocationInterface } from "../interface/location";
 
-export class Location {
+export class Location implements LocationInterface{
 
-  public static geoLocation = (expectedRegion: string) => {
+  private static instance : Location;
+
+  public static getInstance ():Location{
+    if(!Location.instance){
+      Location.instance = new Location();
+    }
+    return Location.instance
+  } 
+
+  public geoLocation = (expectedRegion: string) => {
     return async (req: Request, res: Response, next: NextFunction) => {
       const location = await axios.get(`https://ipapi.co/${req.ip}/json`);
       const country_code = location.data.country_code;
