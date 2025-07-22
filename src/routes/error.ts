@@ -9,7 +9,7 @@ const throwError = (message: string, statusCode: number) => {
 };
 
 // async error
-errorRoute.post("/async-route", async (req, res, next) => {
+errorRoute.post("/custom-error", async (req, res, next) => {
   try {
     throw new Error("async route error");
   } catch (error) {
