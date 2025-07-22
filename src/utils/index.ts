@@ -1,2 +1,2 @@
 export { mockData } from "./mockData";
-export { registerSchema, loginSchema } from "./userSchema";
+export { userSchema } from "./userSchema";

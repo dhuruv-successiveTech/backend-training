@@ -1,2 +1,2 @@
-export { register, login, user } from "./user";
-export { info } from "./userInfo";
+export { UserController } from "./user";
+export { UserInfo } from "./userInfo";

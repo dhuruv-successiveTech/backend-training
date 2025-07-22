@@ -1,27 +1,45 @@
 import express from "express";
 
-import { login, register, user, info } from "../controllers";
+import { UserController, UserInfo } from "../controllers";
 import {
-  loggerMiddleware,
-  validation,
-  queryValidator,
-  geoLocation,
-  authMiddleware,
+  Logger,
+  Validate,
+  QueryValidation,
+  Location,
+  Auth,
 } from "../middlewares";
-import { loginSchema, registerSchema } from "../utils";
-import Joi from "joi"
+import { userSchema } from "../utils";
+import Joi from "joi";
 
 const userRoute = express.Router();
 
-userRoute.post("/login", validation(loginSchema), login);
-userRoute.get("/", authMiddleware, user);
-userRoute.post("/info", loggerMiddleware, info);
-userRoute.post("/register", validation(registerSchema), register);
+userRoute.post(
+  "/login",
+  Validate.validation(userSchema.loginSchema),
+  UserController.login
+);
+userRoute.get("/", Auth.authMiddleware, UserController.user);
+userRoute.post("/info", Logger.loggerMiddleware, UserInfo.info);
+userRoute.post(
+  "/register",
+  Validate.validation(userSchema.registerSchema),
+  UserController.register
+);
 
 // middleware chaining
 
-userRoute.post("/dashboard", loggerMiddleware, authMiddleware, user);
-userRoute.post("/info/:id", queryValidator, geoLocation("IN"), info);
+userRoute.post(
+  "/dashboard",
+  Logger.loggerMiddleware,
+  Auth.authMiddleware,
+  UserController.user
+);
+userRoute.post(
+  "/info/:id",
+  QueryValidation.queryValidator,
+  Location.geoLocation("IN"),
+  UserInfo.info
+);
 
 // request with parameter
 
