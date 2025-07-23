@@ -2,23 +2,34 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
+import { userControllerInterface } from "../interface/userController";
 
 interface userInterface {
   userName: string;
-  password: string;
   email?: string;
+  phone?: number;
+  password: string;
   gender?: string;
-  mobile?: string;
 }
 
-export class UserController {
-  private static users: userInterface[] = [];
+export class UserController implements userControllerInterface {
+  private static instance: UserController;
 
-  public static user = (
+  private users: userInterface[] = [];
+  private constructor() {}
+
+  public static getInstance(): UserController {
+    if (!UserController.instance) {
+      UserController.instance = new UserController();
+    }
+    return UserController.instance;
+  }
+
+  public user(
     req: Request & { user?: userInterface },
     res: Response,
     next: NextFunction
-  ) => {
+  ): void {
     try {
       if (req.user) {
         res.status(200).json({
@@ -34,58 +45,49 @@ export class UserController {
       console.error(error);
       next(error);
     }
-  };
+  }
 
-  public static login = async (
+  public async login(
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+  ): Promise<void> {
     try {
       const { userName, password } = req.body;
-
-      const existing = UserController.users.find(
-        (user) => user.userName === userName
-      );
-
+      const existing = this.users.find((u) => u.userName === userName);
       if (!existing) {
-        return res.status(404).json({ message: "user not found" });
-      }
-      const passwordVerify = await bcrypt.compare(password, existing.password);
-      if (!passwordVerify) {
-        return res.status(400).json({ message: "passowrd do not match" });
+        res.status(404).json({ message: "user not found" });
+        return;
       }
 
-      const token = jwt.sign(
-        {
-          userName,
-        },
-        config.secretKey,
-        { expiresIn: "5h" }
-      );
-      return res.status(201).json({
-        message: "user logged in",
-        token: token,
+      const valid = await bcrypt.compare(password, existing.password);
+      if (!valid) {
+        res.status(400).json({ message: "password does not match" });
+        return;
+      }
+
+      const token = jwt.sign({ userName }, config.secretKey, {
+        expiresIn: "5h",
       });
+      res.status(200).json({ message: "user logged in", token });
     } catch (error) {
       console.error(error);
       next(error);
     }
-  };
+  }
 
-  public static register = async (
+  public async register(
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+  ): Promise<void> {
     try {
       const { userName, password, email, gender, mobile } = req.body;
 
-      const existing = UserController.users.find(
-        (user) => user.userName === userName
-      );
+      const existing = this.users.find((user) => user.userName === userName);
       if (existing) {
-        return res.status(400).json({ message: "user already exists" });
+        res.status(400).json({ message: "user already exists" });
+        return;
       }
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = {
@@ -95,13 +97,13 @@ export class UserController {
         gender,
         mobile,
       };
-      UserController.users.push(newUser);
+      this.users.push(newUser);
 
-      return res
+      res
         .status(201)
         .json({ success: true, message: "user registered successfully" });
     } catch (error) {
       next(error);
     }
-  };
+  }
 }

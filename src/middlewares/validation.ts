@@ -1,8 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
+import { ValidationInterface } from "../interface/validation";
 
-export class Validate {
-  public static validation = (schema: Joi.ObjectSchema) => {
+export class Validate implements ValidationInterface {
+  private static instance: Validate;
+
+  public static getInstance(): Validate {
+    if (!Validate.instance) {
+      Validate.instance = new Validate();
+    }
+    return Validate.instance;
+  }
+
+  public validation = (schema: Joi.ObjectSchema) => {
     return (req: Request, res: Response, next: NextFunction) => {
       const { error } = schema.validate(req.body);
       if (error) {

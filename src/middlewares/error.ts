@@ -1,11 +1,16 @@
 import { NextFunction, Request, Response } from "express";
+import { ErrorInterface } from "../interface/error";
 
-interface ErrorInterface {
-  statusCode: number;
-}
-export class ApiError extends Error {
-  public static error = (
-    err: Error & ErrorInterface,
+export class ApiError implements ErrorInterface {
+  private static instance : ApiError;
+  public static getInstance ():ApiError{
+    if(!ApiError.instance){
+      ApiError.instance = new ApiError()
+    }
+    return ApiError.instance;
+  }
+  public error = (
+    err: Error & {statusCode: number;},
     req: Request,
     res: Response,
     next: NextFunction
@@ -13,7 +18,7 @@ export class ApiError extends Error {
     const status = err.statusCode || 500;
     return res.status(status).json({
       message: err.message,
-      status: false,
+      success: false,
     });
   };
 }

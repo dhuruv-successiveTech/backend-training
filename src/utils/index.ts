@@ -1,2 +1,2 @@
 export { mockData } from "./mockData";
-export { userSchema } from "./userSchema";
+export { UserSchema } from "./userSchema";

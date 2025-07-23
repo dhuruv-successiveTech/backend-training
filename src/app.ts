@@ -25,8 +25,13 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(Header.customHeader);
-app.use(Limiter.rateLimiter(4, 25000));
+
+const header = Header.getInstance();
+const apiError = ApiError.getInstance();
+const limiter = Limiter.getInstance();
+
+app.use(header.customHeader);
+app.use(limiter.rateLimiter(4, 25000));
 
 const data: MockdataInterface[] = mockData;
 
@@ -43,7 +48,7 @@ app.use((req, res, next) => {
   next(createError(404, "Route Not Found"));
 });
 
-app.use(ApiError.error);
+app.use(apiError.error);
 
 app.listen(config.port, () => {
   console.log(`server listening at http://localhost:${config.port}`);

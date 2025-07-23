@@ -8,37 +8,47 @@ import {
   Location,
   Auth,
 } from "../middlewares";
-import { userSchema } from "../utils";
+import { UserSchema } from "../utils";
 import Joi from "joi";
 import { create, get } from "../controllers/crud";
 
 const userRoute = express.Router();
+const userController = UserController.getInstance();
+const auth = Auth.getInstance();
+const location = Location.getInstance();
+const logger = Logger.getInstance();
+const queryValidation = QueryValidation.getInstance();
+const validate = Validate.getInstance();
+const userSchema = UserSchema.getInstance();
 
 userRoute.post(
   "/login",
-  Validate.validation(userSchema.loginSchema),
-  UserController.login
+  validate.validation(userSchema.loginSchema),
+  userController.login.bind(userController)
 );
-userRoute.get("/", Auth.authMiddleware, UserController.user);
-userRoute.post("/info", Logger.loggerMiddleware, UserInfo.info);
+
+userRoute.get("/", auth.authMiddleware.bind(auth), userController.user);
+
+userRoute.post("/info", logger.loggerMiddleware, UserInfo.info);
 userRoute.post(
   "/register",
-  Validate.validation(userSchema.registerSchema),
-  UserController.register
+  validate.validation(userSchema.registerSchema),
+  userController.register.bind(userController)
+  //The .bind(userController) ensures that this inside the register method refers to the instance of UserController.
 );
 
 // middleware chaining
 
 userRoute.post(
   "/dashboard",
-  Logger.loggerMiddleware,
-  Auth.authMiddleware,
-  UserController.user
+  logger.loggerMiddleware,
+  auth.authMiddleware.bind(auth),
+  userController.user.bind(userController)
 );
 userRoute.post(
   "/info/:id",
-  QueryValidation.queryValidator,
-  Location.geoLocation("IN"),
+  queryValidation.queryValidator,
+  location.geoLocation("IN"),
   UserInfo.info
 );
 
