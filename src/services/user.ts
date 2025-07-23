@@ -20,7 +20,6 @@ const userData = async (body:requestInterface) => {
 const getData = async () => {
   const data = await user.find();
   console.log(data);
-  
   return data;
 };
 
