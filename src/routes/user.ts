@@ -10,6 +10,7 @@ import {
 } from "../middlewares";
 import { UserSchema } from "../utils";
 import Joi from "joi";
+import { UserProfile } from "../controllers/userProfile";
 
 
 const userRoute = express.Router();
@@ -20,6 +21,7 @@ const logger = Logger.getInstance();
 const queryValidation = QueryValidation.getInstance();
 const validate = Validate.getInstance();
 const userSchema = UserSchema.getInstance();
+const profile = UserProfile.getInstance()
 
 userRoute.post(
   "/login",
@@ -51,6 +53,12 @@ userRoute.post(
   location.geoLocation("IN"),
   UserInfo.info
 );
+
+userRoute.post(
+  "/profile",
+  profile.userProfileController
+);
+
 
 // request with parameter
 

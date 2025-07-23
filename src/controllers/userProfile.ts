@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { UserProfileService } from "../services/userProfile";
+import { UserSchema } from "../utils";
 
-const profile = UserProfileService.getInstance();
+const profileService = UserProfileService.getInstance();
+const joiSchema = UserSchema.getInstance();
 
 export class UserProfile {
   private static instance: UserProfile;
@@ -17,7 +19,11 @@ export class UserProfile {
     res: Response,
     next: NextFunction
   ) {
-    const data = await profile.postProfile(req.body);
+    const { error } = joiSchema.profileSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    const data = await profileService.postProfile(req.body);
     return res.json({
       message: "data saved",
       data: data,

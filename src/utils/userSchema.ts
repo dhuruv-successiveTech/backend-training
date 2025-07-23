@@ -27,4 +27,15 @@ export class UserSchema {
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
       .required(),
   });
+
+  public profileSchema = Joi.object({
+    name: Joi.string().min(3).max(30).required(),
+    email: Joi.string().email().required(),
+    age: Joi.number().required(),
+    hobbies: Joi.array().items(Joi.string()),
+    address: Joi.object({
+      city: Joi.string(),
+      zip: Joi.number(),
+    }),
+  });
 }

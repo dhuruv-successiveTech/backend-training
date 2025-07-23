@@ -10,9 +10,7 @@ export class CountriesRepo {
     }
     return CountriesRepo.instance;
   }
-  public async countriesPostRepo(
-    countrydetails: CountryDetailsInterface[]
-  ): Promise<CountryDetailsInterface[]> {
+  public async countriesPostRepo(countrydetails: CountryDetailsInterface[]): Promise<CountryDetailsInterface[]> {
     const post = new countries({ countries: countrydetails });
     await post.save();
     return post.countries;

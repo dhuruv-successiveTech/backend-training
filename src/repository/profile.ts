@@ -12,8 +12,8 @@ export class ProfileRepo {
   }
 
   public async profileRepo(body: ProfileInterface): Promise<ProfileInterface>{
-    const data = new profiles(body);
-    await data.save();
+    const data = await profiles.create(body);
+
     return data;
   }
 }

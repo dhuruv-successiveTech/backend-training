@@ -2,9 +2,9 @@ export interface ProfileInterface {
   name: string;
   email: string;
   age: number;
-  hobbies?:[],
-  address: {
-    city: string;
-    zip: number;
-  };
+  hobbies?:string[],
+  address?: {
+    city?: string | null | undefined;
+    zip?: number | null | undefined;
+  } | null;
 }
