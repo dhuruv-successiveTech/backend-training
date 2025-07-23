@@ -35,6 +35,8 @@ app.use(limiter.rateLimiter(4, 25000));
 
 const data: MockdataInterface[] = mockData;
 
+
+
 app.get("/user", (req: Request, res: Response) => {
   res.status(200).json({
     data: data,
@@ -49,6 +51,7 @@ app.use((req, res, next) => {
 });
 
 app.use(apiError.error);
+
 
 app.listen(config.port, () => {
   console.log(`server listening at http://localhost:${config.port}`);
