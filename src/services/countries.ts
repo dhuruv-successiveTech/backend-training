@@ -12,9 +12,7 @@ export class Countries {
     }
     return Countries.instance;
   }
-  public async countriesService(
-    countrydetails: CountryDetailsInterface[]
-  ): Promise<CountryDetailsInterface[]> {
+  public async countriesService( countrydetails: CountryDetailsInterface[] ): Promise<CountryDetailsInterface[]> {
     return countryRepo.countriesPostRepo(countrydetails);
   }
 }

@@ -8,3 +8,4 @@ export { LoggerInterface } from "./logger";
 export { QueryValidationInterface } from "./queryValidation";
 export { userControllerInterface } from "./userController";
 export { ValidationInterface } from "./validation";
+export { ProfileInterface } from "./profile";
