@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { QueryValidationInterface } from "../interface/queryValidation";
+import { QueryValidationInterface } from "../interface";
 
 const querySchema = Joi.number().required();
 

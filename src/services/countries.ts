@@ -1,4 +1,4 @@
-import { CountryDetailsInterface } from "../interface/countries";
+import { CountryDetailsInterface } from "../interface";
 import { CountriesRepo } from "../repository/countries";
 
 const countryRepo = CountriesRepo.getInstance();

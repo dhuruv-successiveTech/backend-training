@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
-import { AuthInterface } from "../interface/auth";
+import { AuthInterface } from "../interface";
 
 export class Auth implements AuthInterface {
   private static instance: Auth;

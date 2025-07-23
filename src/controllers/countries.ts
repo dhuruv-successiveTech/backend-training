@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { countryDetails } from "../utils";
-import { Countries } from "../services/countries";
-import { CountryDetailsInterface } from "../interface/countries";
+import { Countries } from "../services";
+import { CountryDetailsInterface } from "../interface";
 
 const countries = Countries.getInstance();
 const country: CountryDetailsInterface[] = countryDetails;

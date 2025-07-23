@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { LimiterInterface } from "../interface/limiter";
+import { LimiterInterface } from "../interface";
 
 export class Limiter implements LimiterInterface {
   private static instance: Limiter;

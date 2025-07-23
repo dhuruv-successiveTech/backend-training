@@ -1,6 +1,6 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-import { LocationInterface } from "../interface/location";
+import { LocationInterface } from "../interface";
 
 export class Location implements LocationInterface{
 

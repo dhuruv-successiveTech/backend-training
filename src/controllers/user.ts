@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
-import { userControllerInterface } from "../interface/userController";
+import { userControllerInterface } from "../interface";
 
 interface userInterface {
   userName: string;

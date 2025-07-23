@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorInterface } from "../interface/error";
+import { ErrorInterface } from "../interface";
 
 export class ApiError implements ErrorInterface {
   private static instance : ApiError;

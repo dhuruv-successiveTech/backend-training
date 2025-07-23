@@ -1,5 +1,5 @@
-import { CountryDetailsInterface } from "../interface/countries";
-import { countries } from "../models/countries";
+import { CountryDetailsInterface } from "../interface";
+import { countries } from "../models";
 
 export class CountriesRepo {
   private static instance: CountriesRepo;

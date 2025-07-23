@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { LoggerInterface } from "../interface/logger";
+import { LoggerInterface } from "../interface";
 
 export class Logger implements LoggerInterface {
   private static instance: Logger;
