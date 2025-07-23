@@ -10,7 +10,7 @@ import {
 } from "../middlewares";
 import { UserSchema } from "../utils";
 import Joi from "joi";
-import { create, get } from "../controllers/crud";
+
 
 const userRoute = express.Router();
 const userController = UserController.getInstance();
@@ -75,10 +75,6 @@ userRoute.post("/details", (req, res, next) => {
     next(new Error("req.body not found"));
   }
 });
-
-userRoute.post("/post",create)
-userRoute.get("/get",get)
-
 
 
 export { userRoute };
