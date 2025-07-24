@@ -16,7 +16,7 @@ export class UserService {
     return await user.RegisterRepo(body);
   }
 
-  public async getUser(body: UserInterface): Promise<UserInterface | null> {
+  public async findUser(body: UserInterface): Promise<UserInterface | null> {
     return await user.GetUserRepo(body);
   }
 }

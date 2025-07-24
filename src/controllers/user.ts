@@ -9,81 +9,80 @@ import { UserService } from "../services/user";
 
 const userService = UserService.getInstance();
 
-export class UserController implements userControllerInterface {
+class UserController implements userControllerInterface {
   private static instance: UserController;
   private constructor() {}
 
   public static getInstance(): UserController {
-    if (!UserController.instance) {
-      UserController.instance = new UserController();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return UserController.instance;
+    return this.instance;
   }
 
-  public user(
+  public user = (
     req: Request & { user?: UserInterface },
     res: Response,
     next: NextFunction
-  ): void {
+  ): Response<any, Record<string, any>> | void => {
     try {
-      if (req.user) {
-        res.status(200).json({
-          data: req.user,
+      if (req?.user) {
+        return res.status(200).json({
+          data: req?.user,
           message: "User Data",
         });
       } else {
-        res.status(401).json({
-          message: "User Unauthorised",
+        return res.status(403).json({
+          message: "Access Denied",
         });
       }
     } catch (error) {
       console.error(error);
-      next(error);
+      throw error;
     }
-  }
+  };
 
-  public async login(
+  public login = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ): Promise<Response<any, Record<string, any>> | void> => {
     try {
-      const { userName,password } = req.body;
-      const existing = await userService.getUser(req.body);
-      if (!existing) {
+      const { userName, password } = req?.body;
+      const isExist = await userService.findUser(userName);
+      if (!isExist) {
         res.status(404).json({ message: "user not found" });
         return;
       }
 
-      const valid = await bcrypt.compare(password, existing?.password);
+      const valid = await bcrypt.compare(password, isExist?.password);
       if (!valid) {
-        res.status(400).json({ message: "password does not match" });
-        return;
+        return res.status(400).json({ message: "password does not match" });
       }
 
       const token = jwt.sign({ userName }, config.secretKey, {
         expiresIn: "5h",
       });
-      res.status(200).json({ message: "user logged in", token });
+      return res.status(200).json({ message: "user logged in", token });
     } catch (error) {
       console.error(error);
-      next(error);
+      throw error;
     }
-  }
+  };
 
-  public async register(
+  public register = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ): Promise<Response<any, Record<string, any>> | void> => {
     try {
-    
-      const existing = await userService.getUser(req.body);
-      if (existing) {
+      const { userName } = req.body;
+      const isExist = await userService.findUser(userName);
+      if (isExist) {
         res.status(400).json({ message: "user already exists" });
         return;
       }
-      const userPost = await userService.userRegister(req.body);
+      const userPost = await userService.userRegister(req?.body);
 
       res.status(201).json({
         success: true,
@@ -91,7 +90,9 @@ export class UserController implements userControllerInterface {
         user: userPost,
       });
     } catch (error) {
-      next(error);
+      throw error;
     }
-  }
+  };
 }
+
+export default UserController.getInstance();

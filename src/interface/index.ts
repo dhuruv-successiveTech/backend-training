@@ -9,3 +9,4 @@ export { QueryValidationInterface } from "./queryValidation";
 export { userControllerInterface } from "./userController";
 export { ValidationInterface } from "./validation";
 export { ProfileInterface } from "./profile";
+export { UserInterface } from "./user";

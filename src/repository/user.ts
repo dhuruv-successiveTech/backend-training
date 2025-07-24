@@ -1,13 +1,13 @@
-import { UserInterface } from "../interface/user";
+import { UserInterface } from "../interface";
 import bcrypt from "bcrypt";
-import { user } from "../models/user";
+import { user } from "../models";
 
 export class UserRepo {
   private static instance: UserRepo;
 
   public static getInstance(): UserRepo {
     if (!this.instance) {
-      this.instance = new UserRepo();
+      this.instance = new this();
     }
     return this.instance;
   }

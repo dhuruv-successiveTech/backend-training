@@ -1,2 +1,2 @@
 export { dataSeedFunction } from "./userData";
-export { Countries } from "./countries";
+export { default as Countries } from "./countries";

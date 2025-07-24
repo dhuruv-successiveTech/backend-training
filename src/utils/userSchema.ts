@@ -1,13 +1,13 @@
 import Joi from "joi";
 
-export class UserSchema {
+class UserSchema {
   private static instance: UserSchema;
 
   public static getInstance(): UserSchema {
-    if (!UserSchema.instance) {
-      UserSchema.instance = new UserSchema();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return UserSchema.instance;
+    return this.instance;
   }
 
   public registerSchema = Joi.object({
@@ -39,3 +39,5 @@ export class UserSchema {
     }),
   });
 }
+
+export default UserSchema.getInstance();
