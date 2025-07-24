@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { LimiterInterface } from "../interface";
 
-export class Limiter implements LimiterInterface {
+class Limiter implements LimiterInterface {
   private static instance: Limiter;
 
   public static getInstance(): Limiter {
-    if (!Limiter.instance) {
-      Limiter.instance = new Limiter();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return Limiter.instance;
+    return this.instance;
   }
 
   public rateLimiter = (requestLimit: number, timeLimit: number) => {
@@ -36,3 +36,5 @@ export class Limiter implements LimiterInterface {
     };
   };
 }
+
+export default Limiter.getInstance()

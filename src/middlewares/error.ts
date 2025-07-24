@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorInterface } from "../interface";
 
-export class ApiError implements ErrorInterface {
+class ApiError implements ErrorInterface {
   private static instance : ApiError;
   public static getInstance ():ApiError{
-    if(!ApiError.instance){
-      ApiError.instance = new ApiError()
+    if(!this.instance){
+      this.instance = new this()
     }
-    return ApiError.instance;
+    return this.instance;
   }
   public error = (
     err: Error & {statusCode: number;},
@@ -22,3 +22,5 @@ export class ApiError implements ErrorInterface {
     });
   };
 }
+
+export default ApiError.getInstance();

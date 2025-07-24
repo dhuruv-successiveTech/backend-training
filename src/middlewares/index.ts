@@ -1,8 +1,8 @@
-export { Auth } from "./auth";
-export { Header } from "./customHeader";
-export { ApiError } from "./error";
-export { Logger } from "./logger";
-export { Limiter } from "./rateLimiter";
-export { Location } from "./geoLocation";
-export { QueryValidation } from "./queryValidator";
-export { Validate } from "./validation";
+export { default as Auth } from "./auth";
+export { default as Header } from "./customHeader";
+export { default as ApiError } from "./error";
+export { default as Logger } from "./logger";
+export { default as Limiter } from "./rateLimiter";
+export { default as Location } from "./geoLocation";
+export { default as QueryValidation } from "./queryValidator";
+export { default as Validate } from "./validation";

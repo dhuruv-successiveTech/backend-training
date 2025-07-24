@@ -3,18 +3,26 @@ import { CountriesRepo } from "../repository/countries";
 
 const countryRepo = CountriesRepo.getInstance();
 
-export class Countries {
+class Countries {
   private static instance: Countries;
 
   public static getInstance(): Countries {
-    if (!Countries.instance) {
-      Countries.instance = new Countries();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return Countries.instance;
+    return this.instance;
   }
-  public async countriesService(
+  public async seedCountries(
     countrydetails: CountryDetailsInterface[]
-  ): Promise<CountryDetailsInterface[]> {
-    return countryRepo.countriesPostRepo(countrydetails);
+  ): Promise<void> {
+    const exists = await countryRepo.countriesExist();
+    if (!exists) {
+      await countryRepo.countriesPostRepo(countrydetails);
+      console.log("Countries seeded successfully.");
+    } else {
+      console.log("Countries already exist in the database. Skipping seeding.");
+    }
   }
 }
+
+export default Countries.getInstance()

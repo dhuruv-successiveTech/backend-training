@@ -10,6 +10,12 @@ export class CountriesRepo {
     }
     return CountriesRepo.instance;
   }
+
+  public async countriesExist(): Promise<boolean> {
+  const existing = await countries.findOne({});
+  return !!existing;
+}
+
   public async countriesPostRepo(
     countrydetails: CountryDetailsInterface[]
   ): Promise<CountryDetailsInterface[]> {

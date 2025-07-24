@@ -13,47 +13,39 @@ import Joi from "joi";
 
 
 const userRoute = express.Router();
-const userController = UserController.getInstance();
-const auth = Auth.getInstance();
-const location = Location.getInstance();
-const logger = Logger.getInstance();
-const queryValidation = QueryValidation.getInstance();
-const validate = Validate.getInstance();
-const userSchema = UserSchema.getInstance();
 
 userRoute.post(
   "/login",
-  validate.validation(userSchema.loginSchema),
-  userController.login.bind(userController)
+  Validate.validation(UserSchema?.loginSchema),
+  UserController.login
 );
 
-userRoute.get("/", auth.authMiddleware.bind(auth), userController.user);
+userRoute.get("/", Auth?.authMiddleware, UserController?.user);
 
-userRoute.post("/info", logger.loggerMiddleware, UserInfo.info);
+userRoute.post("/info", Logger?.loggerMiddleware, UserInfo?.info);
 userRoute.post(
   "/register",
-  validate.validation(userSchema.registerSchema),
-  userController.register.bind(userController)
-  //The .bind(userController) ensures that this inside the register method refers to the instance of UserController.
+  Validate.validation(UserSchema?.registerSchema),
+  UserController?.register
 );
 
 // middleware chaining
 
 userRoute.post(
   "/dashboard",
-  logger.loggerMiddleware,
-  auth.authMiddleware.bind(auth),
-  userController.user.bind(userController)
+  Logger?.loggerMiddleware,
+  Auth?.authMiddleware,
+  UserController?.user
 );
-userRoute.post(
+
+userRoute?.post(
   "/info/:id",
-  queryValidation.queryValidator,
-  location.geoLocation("IN"),
-  UserInfo.info
+  QueryValidation?.queryValidator,
+  Location?.geoLocation("IN"),
+  UserInfo?.info
 );
 
 // request with parameter
-
 const userDetails = Joi.object({
   name: Joi.string().min(2).required(),
   age: Joi.number().integer().min(18).max(80).required(),
@@ -61,10 +53,13 @@ const userDetails = Joi.object({
 });
 
 userRoute.post("/details", (req, res, next) => {
-  const { error } = userDetails.validate(req.body);
-  if (req.body) {
+  const { error } = userDetails.validate(req?.body);
+  if (req?.body) {
     if (error) {
-      next(error);
+      return res.status(400).json({
+        message: error.message,
+        success: false,
+      });
     } else {
       return res.json({
         message: "User details received successfully",
@@ -72,7 +67,7 @@ userRoute.post("/details", (req, res, next) => {
       });
     }
   } else {
-    next(new Error("req.body not found"));
+    throw new Error("req.body not found");
   }
 });
 

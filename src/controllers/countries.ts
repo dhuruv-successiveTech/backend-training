@@ -3,29 +3,20 @@ import { countryDetails } from "../utils";
 import { Countries } from "../services";
 import { CountryDetailsInterface } from "../interface";
 
-const countries = Countries.getInstance();
 const country: CountryDetailsInterface[] = countryDetails;
-export class CountriesController {
+class CountriesController {
   private static instance: CountriesController;
 
   public static getInstance(): CountriesController {
-    if (!CountriesController.instance) {
-      CountriesController.instance = new CountriesController();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return CountriesController.instance;
+    return this.instance;
   }
 
-  public async postCountries(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    
-    const data = await countries.countriesService(country);
-
-    res.status(201).json({
-      message: "Countries posted successfully",
-      countries: data,
-    });
+  public async postCountries(): Promise<void> {
+    await Countries.seedCountries(country);
   }
 }
+
+export default CountriesController.getInstance()
