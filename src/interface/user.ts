@@ -4,4 +4,5 @@ export interface UserInterface {
   mobile: number;
   password: string;
   gender: string;
+  authType:string
 }

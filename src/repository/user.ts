@@ -22,6 +22,7 @@ export class UserRepo {
       email,
       gender,
       mobile,
+      authType:"user"
     };
 
     const userPost = new user(newUser);
