@@ -3,19 +3,14 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
 import { userControllerInterface } from "../interface";
+import { user } from "../models/user";
+import { UserInterface } from "../interface/user";
+import { UserService } from "../services/user";
 
-interface userInterface {
-  userName: string;
-  email?: string;
-  phone?: number;
-  password: string;
-  gender?: string;
-}
+const userService = UserService.getInstance();
 
 export class UserController implements userControllerInterface {
   private static instance: UserController;
-
-  private users: userInterface[] = [];
   private constructor() {}
 
   public static getInstance(): UserController {
@@ -26,7 +21,7 @@ export class UserController implements userControllerInterface {
   }
 
   public user(
-    req: Request & { user?: userInterface },
+    req: Request & { user?: UserInterface },
     res: Response,
     next: NextFunction
   ): void {
@@ -53,14 +48,14 @@ export class UserController implements userControllerInterface {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { userName, password } = req.body;
-      const existing = this.users.find((u) => u.userName === userName);
+      const { userName,password } = req.body;
+      const existing = await userService.getUser(req.body);
       if (!existing) {
         res.status(404).json({ message: "user not found" });
         return;
       }
 
-      const valid = await bcrypt.compare(password, existing.password);
+      const valid = await bcrypt.compare(password, existing?.password);
       if (!valid) {
         res.status(400).json({ message: "password does not match" });
         return;
@@ -82,26 +77,19 @@ export class UserController implements userControllerInterface {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { userName, password, email, gender, mobile } = req.body;
-
-      const existing = this.users.find((user) => user.userName === userName);
+    
+      const existing = await userService.getUser(req.body);
       if (existing) {
         res.status(400).json({ message: "user already exists" });
         return;
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = {
-        userName,
-        password: hashedPassword,
-        email,
-        gender,
-        mobile,
-      };
-      this.users.push(newUser);
+      const userPost = await userService.userRegister(req.body);
 
-      res
-        .status(201)
-        .json({ success: true, message: "user registered successfully" });
+      res.status(201).json({
+        success: true,
+        message: "user registered successfully",
+        user: userPost,
+      });
     } catch (error) {
       next(error);
     }

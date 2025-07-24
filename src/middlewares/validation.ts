@@ -18,6 +18,7 @@ export class Validate implements ValidationInterface {
       if (error) {
         return next(error);
       }
+      else
       next();
     };
   };
