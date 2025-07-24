@@ -29,8 +29,8 @@ export class UserRepo {
     return await userPost.save();
   }
 
-  public async GetUserRepo(body: UserInterface): Promise<UserInterface | null> {
-    const { userName } = body;
+  public async GetUserRepo(userName: string): Promise<UserInterface | null> {
+
     const existingUser = await user.findOne({ userName });
     return existingUser;
   }
