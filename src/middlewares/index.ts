@@ -6,3 +6,4 @@ export { default as Limiter } from "./rateLimiter";
 export { default as Location } from "./geoLocation";
 export { default as QueryValidation } from "./queryValidator";
 export { default as Validate } from "./validation";
+export {default as AdminAuth} from "./adminAuth"

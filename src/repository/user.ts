@@ -22,15 +22,14 @@ export class UserRepo {
       email,
       gender,
       mobile,
-      authType:"user"
+      authType: "user",
     };
 
     const userPost = new user(newUser);
     return await userPost.save();
   }
 
-  public async GetUserRepo(body: UserInterface): Promise<UserInterface | null> {
-    const { userName } = body;
+  public async GetUserRepo(userName: string): Promise<UserInterface | null> {
     const existingUser = await user.findOne({ userName });
     return existingUser;
   }
