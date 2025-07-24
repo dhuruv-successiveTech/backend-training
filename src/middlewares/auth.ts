@@ -3,37 +3,38 @@ import jwt from "jsonwebtoken";
 import { config } from "../config/config";
 import { AuthInterface } from "../interface/auth";
 
-export class Auth implements AuthInterface {
+class Auth implements AuthInterface {
   private static instance: Auth;
 
-  private constructor() {}
-
   public static getInstance(): Auth {
-    if (!Auth.instance) {
-      Auth.instance = new Auth();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return Auth.instance;
+    return this.instance;
   }
 
-  public  authMiddleware = (
+  public authMiddleware = (
     req: Request & { user?: string | jwt.JwtPayload },
     res: Response,
     next: NextFunction
-  ) :void=>  {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if (!token) {
-       res.status(401).json({ message: "No token provided" });
-       return;
-    }
+  ): Response<any, Record<string, any>> | void => {
     try {
-      const decoded = jwt.verify(token, config.secretKey);
+      const authHeader = req?.headers["authorization"];
+      const token = authHeader && authHeader.split(" ")[1];
+
+      if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+      const decoded = jwt.verify(token, config?.secretKey);
       req.user = decoded;
       return next();
     } catch (error) {
       console.error(error);
-      next(error);
+      const errorMessage =
+        error instanceof Error ? error.message : "User Unauthorised";
+      return res.status(401).json({ message: errorMessage });
     }
   };
 }
+
+export default Auth.getInstance();

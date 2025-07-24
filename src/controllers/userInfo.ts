@@ -1,8 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { dataSeedFunction } from "../services/userData";
 
-export class UserInfo {
-  public static info = (req: Request, res: Response, next: NextFunction) => {
+class UserInfo {
+  private static instance: UserInfo;
+  public static getInstance(): UserInfo {
+    if (!this.instance) {
+      this.instance = new this();
+    }
+    return this.instance;
+  }
+  public info = (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = dataSeedFunction();
       res.json({
@@ -11,7 +18,9 @@ export class UserInfo {
       });
     } catch (error) {
       console.error(error);
-      next(error);
+      throw error;
     }
   }
 }
+
+export default UserInfo.getInstance();

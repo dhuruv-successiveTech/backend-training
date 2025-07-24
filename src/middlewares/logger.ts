@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { LoggerInterface } from "../interface/logger";
 
-export class Logger implements LoggerInterface {
+class Logger implements LoggerInterface {
   private static instance: Logger;
   public static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return Logger.instance;
+    return this.instance;
   }
   public loggerMiddleware = (
     req: Request,
@@ -16,10 +16,12 @@ export class Logger implements LoggerInterface {
   ) => {
     const timestamp = new Date();
     console.log(
-      `Request method : ${req.method}, URL : ${
-        req.originalUrl
+      `Request method : ${req?.method}, URL : ${
+        req?.originalUrl
       }, timestamp : ${timestamp.toLocaleString()}`
     );
     next();
   };
 }
+
+export default Logger.getInstance()

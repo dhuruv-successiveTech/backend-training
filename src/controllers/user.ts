@@ -4,90 +4,86 @@ import jwt from "jsonwebtoken";
 import { config } from "../config/config";
 import { userControllerInterface } from "../interface/userController";
 
-interface userInterface {
+interface UserInterface {
   userName: string;
-  email?: string;
-  phone?: number;
+  email: string;
+  mobile: number;
   password: string;
-  gender?: string;
+  gender: string;
 }
 
-export class UserController implements userControllerInterface {
+class UserController implements userControllerInterface {
   private static instance: UserController;
 
-  private users: userInterface[] = [];
-  private constructor() {}
+  private users: UserInterface[] = [];
 
   public static getInstance(): UserController {
-    if (!UserController.instance) {
-      UserController.instance = new UserController();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return UserController.instance;
+    return this.instance;
   }
 
-  public user(
-    req: Request & { user?: userInterface },
+  public user = (
+    req: Request & { user?: UserInterface },
     res: Response,
     next: NextFunction
-  ): void {
+  ): Response<any, Record<string, any>> | void => {
     try {
-      if (req.user) {
-        res.status(200).json({
-          data: req.user,
+      if (req?.user) {
+        return res.status(200).json({
+          data: req?.user,
           message: "User Data",
         });
       } else {
-        res.status(401).json({
-          message: "User Unauthorised",
+        return res.status(403).json({
+          message: "Access Denied",
         });
       }
     } catch (error) {
       console.error(error);
-      next(error);
+      throw error;
     }
-  }
+  };
 
-  public async login(
+  public login = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ): Promise<Response<any, Record<string, any>> | void> => {
     try {
-      const { userName, password } = req.body;
-      const existing = this.users.find((u) => u.userName === userName);
-      if (!existing) {
-        res.status(404).json({ message: "user not found" });
-        return;
+      const { userName, password } = req?.body;
+      const isExist = this.users.find((u) => u?.userName === userName);
+      if (!isExist) {
+        return res.status(404).json({ message: "user not found" });
       }
 
-      const valid = await bcrypt.compare(password, existing.password);
+      const valid = await bcrypt.compare(password, isExist?.password);
       if (!valid) {
-        res.status(400).json({ message: "password does not match" });
-        return;
+        return res.status(400).json({ message: "password does not match" });
       }
 
       const token = jwt.sign({ userName }, config.secretKey, {
         expiresIn: "5h",
       });
-      res.status(200).json({ message: "user logged in", token });
+      return res.status(200).json({ message: "user logged in", token });
     } catch (error) {
       console.error(error);
-      next(error);
+      throw error;
     }
-  }
+  };
 
-  public async register(
+  public register = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ): Promise<Response<any, Record<string, any>> | void> => {
     try {
-      const { userName, password, email, gender, mobile } = req.body;
+      const { userName, password, email, gender, mobile } = req?.body;
 
-      const existing = this.users.find((user) => user.userName === userName);
-      if (existing) {
-        res.status(400).json({ message: "user already exists" });
-        return;
+      const isExist = this.users.find((user) => user?.userName === userName);
+      if (isExist) {
+        return res.status(400).json({ message: "user already exists" });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = {
@@ -99,11 +95,13 @@ export class UserController implements userControllerInterface {
       };
       this.users.push(newUser);
 
-      res
+      return res
         .status(201)
         .json({ success: true, message: "user registered successfully" });
     } catch (error) {
-      next(error);
+      throw error;
     }
-  }
+  };
 }
+
+export default UserController.getInstance();

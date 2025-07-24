@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 
-export class HealthCheck {
+class HealthCheck {
   private static instance: HealthCheck;
   public static getInstance(): HealthCheck {
-    if (!HealthCheck.instance) {
-      HealthCheck.instance = new HealthCheck();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return HealthCheck.instance;
+    return this.instance;
   }
 
   public healthCheckController = (req: Request, res: Response) => {
@@ -15,3 +15,5 @@ export class HealthCheck {
     });
   };
 }
+
+export default HealthCheck.getInstance();
