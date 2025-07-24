@@ -1,3 +1,3 @@
 export { mockData } from "./mockData";
-export { UserSchema } from "./userSchema";
+export { default as UserSchema } from "./userSchema";
 export { countryDetails } from "./countries";

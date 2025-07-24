@@ -3,9 +3,9 @@ import { UserProfileService } from "../services/userProfile";
 import { UserSchema } from "../utils";
 
 const profileService = UserProfileService.getInstance();
-const joiSchema = UserSchema.getInstance();
+const joiSchema = UserSchema;
 
-export class UserProfile {
+class UserProfile {
   private static instance: UserProfile;
   public static getInstance(): UserProfile {
     if (!UserProfile.instance) {
@@ -30,3 +30,5 @@ export class UserProfile {
     });
   }
 }
+
+export default UserProfile.getInstance();

@@ -1,19 +1,19 @@
 import Joi from "joi";
 
-export class UserSchema {
+class UserSchema {
   private static instance: UserSchema;
 
   public static getInstance(): UserSchema {
-    if (!UserSchema.instance) {
-      UserSchema.instance = new UserSchema();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return UserSchema.instance;
+    return this.instance;
   }
 
   public registerSchema = Joi.object({
     userName: Joi.string().alphanum().min(3).max(30).required(),
     email: Joi.string().email().required(),
-    phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
+    mobile: Joi.number().integer().min(1000000000).max(9999999999).required(),
     gender: Joi.string().valid("male", "female", "other").required(),
     password: Joi.string()
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
@@ -39,3 +39,5 @@ export class UserSchema {
     }),
   });
 }
+
+export default UserSchema.getInstance();

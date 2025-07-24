@@ -4,23 +4,25 @@ import { QueryValidationInterface } from "../interface";
 
 const querySchema = Joi.number().required();
 
-export class QueryValidation implements QueryValidationInterface {
+class QueryValidation implements QueryValidationInterface {
   private static instance: QueryValidation;
 
   public static getInstance(): QueryValidation {
-    if (!QueryValidation.instance) {
-      QueryValidation.instance = new QueryValidation();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return QueryValidation.instance;
+    return this.instance;
   }
 
   public queryValidator = (req: Request, res: Response, next: NextFunction) => {
-    const param = req.params.id;
+    const param = req?.params?.id;
     const { error } = querySchema.validate(param);
     if (req.params.id && error) {
-      next(error);
+      throw error;
     } else {
       next();
     }
   };
 }
+
+export default QueryValidation.getInstance()
