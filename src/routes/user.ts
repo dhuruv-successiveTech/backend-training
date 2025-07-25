@@ -46,12 +46,18 @@ userRoute?.post(
   UserInfo?.info
 );
 
-userRoute.post("/profile", UserProfile.userProfileController);
+userRoute.post(
+  "/profile",
+  Auth.authMiddleware,
+  UserProfile.userProfileController
+);
 
-
-userRoute.post("/admin",Auth.authMiddleware,AdminAuth.adminAuth, UserProfile.userProfileController);
-
-
+userRoute.post(
+  "/admin",
+  Auth.authMiddleware,
+  AdminAuth.adminAuth,
+  UserProfile.userProfileController
+);
 
 // request with parameter
 const userDetails = Joi.object({
