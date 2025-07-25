@@ -2,7 +2,7 @@ import { UserInterface } from "../interface";
 import bcrypt from "bcrypt";
 import { user } from "../models";
 
-export class UserRepo {
+class UserRepo {
   private static instance: UserRepo;
 
   public static getInstance(): UserRepo {
@@ -34,3 +34,5 @@ export class UserRepo {
     return existingUser;
   }
 }
+
+export default UserRepo.getInstance();
