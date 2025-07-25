@@ -1,7 +1,7 @@
 import { ProfileInterface } from "../interface";
 import { profiles } from "../models";
 
-export class ProfileRepo {
+class ProfileRepo {
   private static instance: ProfileRepo;
 
   public static getInstance(): ProfileRepo {
@@ -17,3 +17,5 @@ export class ProfileRepo {
     return data;
   }
 }
+
+export default ProfileRepo.getInstance();

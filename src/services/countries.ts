@@ -1,7 +1,5 @@
 import { CountryDetailsInterface } from "../interface";
-import { CountriesRepo } from "../repository/countries";
-
-const countryRepo = CountriesRepo.getInstance();
+import { CountriesRepo } from "../repository/";
 
 class Countries {
   private static instance: Countries;
@@ -15,9 +13,9 @@ class Countries {
   public async seedCountries(
     countrydetails: CountryDetailsInterface[]
   ): Promise<void> {
-    const exists = await countryRepo.countriesExist();
+    const exists = await CountriesRepo.countriesExist();
     if (!exists) {
-      await countryRepo.countriesPostRepo(countrydetails);
+      await CountriesRepo.countriesPostRepo(countrydetails);
       console.log("Countries seeded successfully.");
     } else {
       console.log("Countries already exist in the database. Skipping seeding.");
@@ -25,4 +23,4 @@ class Countries {
   }
 }
 
-export default Countries.getInstance()
+export default Countries.getInstance();
