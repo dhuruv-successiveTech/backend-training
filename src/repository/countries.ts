@@ -1,7 +1,7 @@
 import { CountryDetailsInterface } from "../interface";
 import { countries } from "../models";
 
-export class CountriesRepo {
+class CountriesRepo {
   private static instance: CountriesRepo;
 
   public static getInstance(): CountriesRepo {
@@ -24,3 +24,5 @@ export class CountriesRepo {
     return post.countries;
   }
 }
+
+export default CountriesRepo.getInstance()

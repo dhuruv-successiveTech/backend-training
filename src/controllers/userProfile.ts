@@ -1,17 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { UserProfileService } from "../services/userProfile";
+import { UserProfileService } from "../services";
 import { UserSchema } from "../utils";
 
-const profileService = UserProfileService.getInstance();
 const joiSchema = UserSchema;
 
 class UserProfile {
   private static instance: UserProfile;
   public static getInstance(): UserProfile {
-    if (!UserProfile.instance) {
-      UserProfile.instance = new UserProfile();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return UserProfile.instance;
+    return this.instance;
   }
 
   public async userProfileController(
@@ -23,7 +22,7 @@ class UserProfile {
     if (error) {
       return next(error);
     }
-    const data = await profileService.postProfile(req.body);
+    const data = await UserProfileService.postProfile(req.body);
     return res.json({
       message: "data saved",
       data: data,

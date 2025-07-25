@@ -1,9 +1,7 @@
 import { ProfileInterface } from "../interface";
-import { ProfileRepo } from "../repository/profile";
+import { ProfileRepo } from "../repository";
 
-const profile = ProfileRepo.getInstance();
-
-export class UserProfileService {
+class UserProfileService {
 
   private static instance: UserProfileService;
 
@@ -15,6 +13,8 @@ export class UserProfileService {
   }
 
   public async postProfile(data: ProfileInterface):Promise<ProfileInterface> {
-    return profile.profileRepo(data);
+    return ProfileRepo.profileRepo(data);
   }
 }
+
+export default UserProfileService.getInstance()
