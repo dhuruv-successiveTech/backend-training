@@ -3,11 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
 import { userControllerInterface } from "../interface";
-import { user } from "../models/user";
 import { UserInterface } from "../interface/user";
-import { UserService } from "../services/user";
-
-const userService = UserService.getInstance();
+import { UserService } from "../services";
 
 class UserController implements userControllerInterface {
   private static instance: UserController;
@@ -49,7 +46,7 @@ class UserController implements userControllerInterface {
   ): Promise<Response<any, Record<string, any>> | void> => {
     try {
       const { userName, password } = req?.body;
-      const isExist = await userService.findUser(userName);
+      const isExist = await UserService.findUser(userName);
       if (!isExist) {
         res.status(404).json({ message: "user not found" });
         return;
@@ -77,12 +74,12 @@ class UserController implements userControllerInterface {
   ): Promise<Response<any, Record<string, any>> | void> => {
     try {
       const { userName } = req.body;
-      const isExist = await userService.findUser(userName);
+      const isExist = await UserService.findUser(userName);
       if (isExist) {
         res.status(400).json({ message: "user already exists" });
         return;
       }
-      const userPost = await userService.userRegister(req?.body);
+      const userPost = await UserService.userRegister(req?.body);
 
       res.status(201).json({
         success: true,

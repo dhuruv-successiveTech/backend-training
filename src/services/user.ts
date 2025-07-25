@@ -1,8 +1,7 @@
 import { UserInterface } from "../interface/user";
-import { UserRepo } from "../repository/user";
+import { UserRepo } from "../repository";
 
-const user = UserRepo.getInstance();
-export class UserService {
+class UserService {
   private static instance: UserService;
 
   public static getInstance(): UserService {
@@ -13,10 +12,12 @@ export class UserService {
   }
 
   public async userRegister(body: UserInterface): Promise<UserInterface> {
-    return await user.RegisterRepo(body);
+    return await UserRepo.RegisterRepo(body);
   }
 
   public async findUser(userName: string): Promise<UserInterface | null> {
-    return await user.GetUserRepo(userName);
+    return await UserRepo.GetUserRepo(userName);
   }
 }
+
+export default UserService.getInstance();
