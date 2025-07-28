@@ -1,8 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import { config } from "../config/config";
-const customHeader = (req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("custom-header", config.header);
-  next();
-};
+import { HeaderInterface } from "../interface/header";
+class Header implements HeaderInterface {
+  private static instance: Header;
+  public static getInstance(): Header {
+    if (!this.instance) {
+      this.instance = new this();
+    }
+    return this.instance;
+  }
 
-export { customHeader };
+  public customHeader = (req: Request, res: Response, next: NextFunction) => {
+    res.setHeader("custom-header", config.header);
+    return next();
+  };
+}
+
+export default Header.getInstance()

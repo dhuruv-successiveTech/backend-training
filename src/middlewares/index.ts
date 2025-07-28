@@ -1,8 +1,8 @@
-export { authMiddleware } from "./auth";
-export { customHeader } from "./customHeader";
-export { error } from "./error";
-export { loggerMiddleware } from "./logger";
-export { rateLimiter } from "./rateLimiter";
-export { geoLocation } from "./geoLocation";
-export { queryValidator } from "./queryValidator";
-export { validation } from "./validation";
+export { default as Auth } from "./auth";
+export { default as Header } from "./customHeader";
+export { default as ApiError } from "./error";
+export { default as Logger } from "./logger";
+export { default as Limiter } from "./rateLimiter";
+export { default as Location } from "./geoLocation";
+export { default as QueryValidation } from "./queryValidator";
+export { default as Validate } from "./validation";

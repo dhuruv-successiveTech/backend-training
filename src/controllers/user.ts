@@ -2,90 +2,106 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
+import { userControllerInterface } from "../interface/userController";
 
-interface userInterface {
-  password: string;
+interface UserInterface {
   userName: string;
+  email: string;
+  mobile: number;
+  password: string;
+  gender: string;
 }
 
-const user = (
-  req: Request & { user?: userInterface },
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (req.user) {
-      res.status(200).json({
-        data: req.user,
-        message: "User Data",
-      });
-    } else {
-      res.status(401).json({
-        message: "User Unauthorised",
-      });
+class UserController implements userControllerInterface {
+  private static instance: UserController;
+
+  private users: UserInterface[] = [];
+
+  public static getInstance(): UserController {
+    if (!this.instance) {
+      this.instance = new this();
     }
-  } catch (error) {
-    next(error);
+    return this.instance;
   }
-};
 
-const users: userInterface[] = [];
-
-const login = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { userName, password } = req.body;
-
-    const existing = users.find((user) => user.userName === userName);
-
-    if (!existing) {
-      return res.status(404).json({ message: "user not found" });
+  public user = (
+    req: Request & { user?: UserInterface },
+    res: Response,
+    next: NextFunction
+  ): Response<any, Record<string, any>> | void => {
+    try {
+      if (req?.user) {
+        return res.status(200).json({
+          data: req?.user,
+          message: "User Data",
+        });
+      } else {
+        return res.status(403).json({
+          message: "Access Denied",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-    const passwordVerify = await bcrypt.compare(password, existing.password);
-    if (!passwordVerify) {
-      return res.status(400).json({ message: "passowrd do not match" });
-    }
+  };
 
-    const token = jwt.sign(
-      {
+  public login = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<any, Record<string, any>> | void> => {
+    try {
+      const { userName, password } = req?.body;
+      const isExist = this.users.find((u) => u?.userName === userName);
+      if (!isExist) {
+        return res.status(404).json({ message: "user not found" });
+      }
+
+      const valid = await bcrypt.compare(password, isExist?.password);
+      if (!valid) {
+        return res.status(400).json({ message: "password does not match" });
+      }
+
+      const token = jwt.sign({ userName }, config.secretKey, {
+        expiresIn: "5h",
+      });
+      return res.status(200).json({ message: "user logged in", token });
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  public register = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<any, Record<string, any>> | void> => {
+    try {
+      const { userName, password, email, gender, mobile } = req?.body;
+
+      const isExist = this.users.find((user) => user?.userName === userName);
+      if (isExist) {
+        return res.status(400).json({ message: "user already exists" });
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = {
         userName,
-      },
-      config.secretKey,
-      { expiresIn: "5h" }
-    );
-    return res.status(201).json({
-      message: "user logged in",
-      token: token,
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
+        password: hashedPassword,
+        email,
+        gender,
+        mobile,
+      };
+      this.users.push(newUser);
 
-const register = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { userName, password, email, gender, mobile } = req.body;
-
-    const existing = users.find((user) => user.userName === userName);
-    if (existing) {
-      return res.status(400).json({ message: "user already exists" });
+      return res
+        .status(201)
+        .json({ success: true, message: "user registered successfully" });
+    } catch (error) {
+      throw error;
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
-      userName,
-      password: hashedPassword,
-      email,
-      gender,
-      mobile,
-    };
-    users.push(newUser);
+  };
+}
 
-    return res
-      .status(201)
-      .json({ success: true, message: "user registered successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export { user, login, register };
+export default UserController.getInstance();

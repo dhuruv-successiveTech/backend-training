@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
 import { router } from "./route";
 import createError from "http-errors";
-import { error, customHeader, rateLimiter } from "./middlewares";
+import { ApiError, Header, Limiter } from "./middlewares";
 import { config } from "./config/config";
 
 interface MockdataInterface {
@@ -22,12 +22,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(customHeader);
-app.use(rateLimiter(4, 25000));
+
+app.use(Header.customHeader);
+app.use(Limiter.rateLimiter(4, 25000));
 
 const data: MockdataInterface[] = mockData;
-
-
 
 app.get("/user", (req: Request, res: Response) => {
   res.status(200).json({
@@ -42,8 +41,7 @@ app.use((req, res, next) => {
   next(createError(404, "Route Not Found"));
 });
 
-app.use(error);
-
+app.use(ApiError.error);
 
 app.listen(config.port, () => {
   console.log(`server listening at http://localhost:${config.port}`);

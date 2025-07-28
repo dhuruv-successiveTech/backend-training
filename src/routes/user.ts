@@ -1,30 +1,50 @@
 import express from "express";
 
-import { login, register, user, info } from "../controllers";
+import { UserController, UserInfo } from "../controllers";
 import {
-  loggerMiddleware,
-  validation,
-  queryValidator,
-  geoLocation,
-  authMiddleware,
+  Logger,
+  Validate,
+  QueryValidation,
+  Location,
+  Auth,
 } from "../middlewares";
-import { loginSchema, registerSchema } from "../utils";
-import Joi from "joi"
+import { UserSchema } from "../utils";
+import Joi from "joi";
 
 const userRoute = express.Router();
 
-userRoute.post("/login", validation(loginSchema), login);
-userRoute.get("/", authMiddleware, user);
-userRoute.post("/info", loggerMiddleware, info);
-userRoute.post("/register", validation(registerSchema), register);
+userRoute.post(
+  "/login",
+  Validate.validation(UserSchema?.loginSchema),
+  UserController.login
+);
+
+userRoute.get("/", Auth?.authMiddleware, UserController?.user);
+
+userRoute.post("/info", Logger?.loggerMiddleware, UserInfo?.info);
+userRoute.post(
+  "/register",
+  Validate.validation(UserSchema?.registerSchema),
+  UserController?.register
+);
 
 // middleware chaining
 
-userRoute.post("/dashboard", loggerMiddleware, authMiddleware, user);
-userRoute.post("/info/:id", queryValidator, geoLocation("IN"), info);
+userRoute.post(
+  "/dashboard",
+  Logger?.loggerMiddleware,
+  Auth?.authMiddleware,
+  UserController?.user
+);
+
+userRoute?.post(
+  "/info/:id",
+  QueryValidation?.queryValidator,
+  Location?.geoLocation("IN"),
+  UserInfo?.info
+);
 
 // request with parameter
-
 const userDetails = Joi.object({
   name: Joi.string().min(2).required(),
   age: Joi.number().integer().min(18).max(80).required(),
@@ -32,10 +52,13 @@ const userDetails = Joi.object({
 });
 
 userRoute.post("/details", (req, res, next) => {
-  const { error } = userDetails.validate(req.body);
-  if (req.body) {
+  const { error } = userDetails.validate(req?.body);
+  if (req?.body) {
     if (error) {
-      next(error);
+      return res.status(400).json({
+        message: error.message,
+        success: false,
+      });
     } else {
       return res.json({
         message: "User details received successfully",
@@ -43,7 +66,7 @@ userRoute.post("/details", (req, res, next) => {
       });
     }
   } else {
-    next(new Error("req.body not found"));
+    throw new Error("req.body not found");
   }
 });
 
