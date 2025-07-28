@@ -8,3 +8,4 @@ export { ILogger } from "./ILogger";
 export { IQueryValidation } from "./IQueryValidation";
 export { IUserController } from "./IUserController";
 export { IValidation } from "./IValidation";
+export { IProfile } from "./IProfile";
