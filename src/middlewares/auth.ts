@@ -26,13 +26,14 @@ class Auth implements AuthInterface {
         return res.status(401).json({ message: "No token provided" });
       }
       const decoded = jwt.verify(token, config?.secretKey);
+       
       req.user = decoded;
       return next();
     } catch (error) {
       console.error(error);
       const errorMessage =
         error instanceof Error ? error.message : "User Unauthorised";
-      return res.status(401).json({ message: errorMessage });
+      return res.status(403).json({ message: errorMessage });
     }
   };
 }

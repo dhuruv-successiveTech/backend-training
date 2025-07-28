@@ -56,7 +56,7 @@ userRoute.post(
   "/admin",
   Auth.authMiddleware,
   AdminAuth.adminAuth,
-  UserProfile.userProfileController
+  UserProfile.getUsers
 );
 
 // request with parameter

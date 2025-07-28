@@ -15,6 +15,11 @@ class UserProfileService {
   public async postProfile(data: ProfileInterface):Promise<ProfileInterface> {
     return ProfileRepo.profileRepo(data);
   }
+
+   public async getUserProfile():Promise<ProfileInterface[]> {
+    return ProfileRepo.getUserRepo();
+  }
+  
 }
 
 export default UserProfileService.getInstance()

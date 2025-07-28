@@ -57,9 +57,13 @@ class UserController implements userControllerInterface {
         return res.status(400).json({ message: "password does not match" });
       }
 
-      const token = jwt.sign({ userName }, config.secretKey, {
-        expiresIn: "5h",
-      });
+      const token = jwt.sign(
+        { userName, authType: isExist.authType, id:isExist._id},
+        config.secretKey,
+        {
+          expiresIn: "5h",
+        }
+      );
       return res.status(200).json({ message: "user logged in", token });
     } catch (error) {
       console.error(error);

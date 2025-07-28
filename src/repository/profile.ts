@@ -11,8 +11,13 @@ class ProfileRepo {
     return ProfileRepo.instance;
   }
 
-  public async profileRepo(body: ProfileInterface): Promise<ProfileInterface>{
+  public async profileRepo(body: ProfileInterface): Promise<ProfileInterface> {
     const data = await profiles.create(body);
+
+    return data;
+  }
+  public async getUserRepo(): Promise<ProfileInterface[]> {
+    const data = await profiles.find({});
 
     return data;
   }
