@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 
-export interface HeaderInterface {
+export interface IHeader {
   customHeader: (req: Request, res: Response, next: NextFunction) => void;
 }

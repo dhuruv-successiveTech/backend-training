@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export interface userControllerInterface {
+export interface IUserController {
   user: (
     req: Request,
     res: Response,

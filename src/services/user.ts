@@ -1,4 +1,4 @@
-import { UserInterface } from "../interface/user";
+import { IUser } from "../entities";
 import { UserRepo } from "../repository";
 
 class UserService {
@@ -11,11 +11,11 @@ class UserService {
     return this.instance;
   }
 
-  public async userRegister(body: UserInterface): Promise<UserInterface> {
+  public async userRegister(body: IUser): Promise<IUser> {
     return await UserRepo.RegisterRepo(body);
   }
 
-  public async findUser(userName: string): Promise<UserInterface | null> {
+  public async findUser(userName: string): Promise<IUser | null> {
     return await UserRepo.GetUserRepo(userName);
   }
 }

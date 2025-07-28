@@ -2,11 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
-import { userControllerInterface } from "../interface";
-import { UserInterface } from "../interface/user";
+import { IUserController, IUser } from "../entities";
 import { UserService } from "../services";
 
-class UserController implements userControllerInterface {
+class UserController implements IUserController {
   private static instance: UserController;
   private constructor() {}
 
@@ -18,7 +17,7 @@ class UserController implements userControllerInterface {
   }
 
   public user = (
-    req: Request & { user?: UserInterface },
+    req: Request & { user?: IUser },
     res: Response,
     next: NextFunction
   ): Response<any, Record<string, any>> | void => {

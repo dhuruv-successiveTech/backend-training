@@ -1,4 +1,4 @@
-import { ProfileInterface } from "../interface";
+import { IProfile } from "../entities";
 import { ProfileRepo } from "../repository";
 
 class UserProfileService {
@@ -12,7 +12,7 @@ class UserProfileService {
     return UserProfileService.instance;
   }
 
-  public async postProfile(data: ProfileInterface):Promise<ProfileInterface> {
+  public async postProfile(data: IProfile):Promise<IProfile> {
     return ProfileRepo.profileRepo(data);
   }
 }
