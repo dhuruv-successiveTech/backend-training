@@ -1,4 +1,4 @@
-import { ProfileInterface } from "../interface";
+import { IProfile } from "../entities";
 import { profiles } from "../models";
 
 class ProfileRepo {
@@ -11,7 +11,7 @@ class ProfileRepo {
     return ProfileRepo.instance;
   }
 
-  public async profileRepo(body: ProfileInterface): Promise<ProfileInterface>{
+  public async profileRepo(body: IProfile): Promise<IProfile>{
     const data = await profiles.create(body);
 
     return data;

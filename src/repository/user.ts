@@ -1,4 +1,4 @@
-import { UserInterface } from "../interface";
+import { IUser } from "../entities";
 import bcrypt from "bcrypt";
 import { user } from "../models";
 
@@ -12,7 +12,7 @@ class UserRepo {
     return this.instance;
   }
 
-  public async RegisterRepo(body: UserInterface): Promise<UserInterface> {
+  public async RegisterRepo(body: IUser): Promise<IUser> {
     const { userName, password, email, gender, mobile } = body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -22,15 +22,14 @@ class UserRepo {
       email,
       gender,
       mobile,
-      authType:"user"
+      authType: "user",
     };
 
     const userPost = new user(newUser);
     return await userPost.save();
   }
 
-  public async GetUserRepo(userName: string): Promise<UserInterface | null> {
-
+  public async GetUserRepo(userName: string): Promise<IUser | null> {
     const existingUser = await user.findOne({ userName });
     return existingUser;
   }
