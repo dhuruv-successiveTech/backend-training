@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { LoggerInterface } from "../interface";
+import { ILogger } from "../entities";
 
-class Logger implements LoggerInterface {
+class Logger implements ILogger {
   private static instance: Logger;
   public static getInstance(): Logger {
     if (!this.instance) {

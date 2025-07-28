@@ -1,4 +1,4 @@
-import { CountryDetailsInterface } from "../interface";
+import { ICountries } from "../entities";
 import { countries } from "../models";
 
 class CountriesRepo {
@@ -17,8 +17,8 @@ class CountriesRepo {
 }
 
   public async countriesPostRepo(
-    countrydetails: CountryDetailsInterface[]
-  ): Promise<CountryDetailsInterface[]> {
+    countrydetails: ICountries[]
+  ): Promise<ICountries[]> {
     const post = new countries({ countries: countrydetails });
     await post.save();
     return post.countries;
