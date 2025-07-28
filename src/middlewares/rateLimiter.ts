@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { ILimiter } from "../entities";
 
-class Limiter implements ILimiter {
+class Limiter{
   private static instance: Limiter;
 
   public static getInstance(): Limiter {
