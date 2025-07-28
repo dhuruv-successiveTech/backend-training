@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
-import { userControllerInterface } from "../interface";
+import { IUserController } from "../entities";
 
 interface UserInterface {
   userName: string;
@@ -12,7 +12,7 @@ interface UserInterface {
   gender: string;
 }
 
-class UserController implements userControllerInterface {
+class UserController implements IUserController {
   private static instance: UserController;
 
   private users: UserInterface[] = [];

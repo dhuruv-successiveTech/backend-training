@@ -1,8 +1,8 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-import { LocationInterface } from "../interface";
+import { ILocation } from "../entities";
 
-class Location implements LocationInterface{
+class Location implements ILocation{
 
   private static instance : Location;
 
