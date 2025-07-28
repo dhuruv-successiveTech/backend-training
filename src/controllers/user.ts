@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
-import { IUserController, IUser } from "../entities";
+import { IUser } from "../entities";
 import { UserService } from "../services";
 
-class UserController implements IUserController {
+class UserController {
   private static instance: UserController;
   private constructor() {}
 
