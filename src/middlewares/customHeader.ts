@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { config } from "../config/config";
-import { HeaderInterface } from "../interface";
-class Header implements HeaderInterface {
+import { IHeader } from "../entities";
+class Header implements IHeader {
   private static instance: Header;
   public static getInstance(): Header {
     if (!this.instance) {

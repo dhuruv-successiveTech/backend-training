@@ -1,4 +1,4 @@
-import { CountryDetailsInterface } from "../interface";
+import { ICountries } from "../entities";
 import { CountriesRepo } from "../repository/countries";
 
 const countryRepo = CountriesRepo.getInstance();
@@ -13,7 +13,7 @@ class Countries {
     return this.instance;
   }
   public async seedCountries(
-    countrydetails: CountryDetailsInterface[]
+    countrydetails: ICountries[]
   ): Promise<void> {
     const exists = await countryRepo.countriesExist();
     if (!exists) {

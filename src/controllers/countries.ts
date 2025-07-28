@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { countryDetails } from "../utils";
 import { Countries } from "../services";
-import { CountryDetailsInterface } from "../interface";
+import { ICountries } from "../entities";
 
-const country: CountryDetailsInterface[] = countryDetails;
+const country: ICountries[] = countryDetails;
 class CountriesController {
   private static instance: CountriesController;
 

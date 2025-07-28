@@ -1,4 +1,4 @@
-import { CountryDetailsInterface } from "../interface";
+import { CountryDetailsInterface } from "../entities";
 import { countries } from "../models";
 
 export class CountriesRepo {
