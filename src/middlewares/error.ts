@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { IError } from "../entities";
 
-class ApiError implements IError {
+class ApiError{
   private static instance : ApiError;
   public static getInstance ():ApiError{
     if(!this.instance){

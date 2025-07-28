@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
-import { IAuth } from "../entities";
 
-class Auth implements IAuth {
+class Auth{
   private static instance: Auth;
 
   public static getInstance(): Auth {

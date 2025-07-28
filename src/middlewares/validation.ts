@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { IValidation } from "../entities";
-
-class Validate implements IValidation {
+class Validate {
   private static instance: Validate;
 
   public static getInstance(): Validate {
