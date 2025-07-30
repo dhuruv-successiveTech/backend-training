@@ -5,7 +5,7 @@ import { router } from "./route";
 import createError from "http-errors";
 import { ApiError, Header, Limiter } from "./middlewares";
 import { config } from "./config/config";
-import { dbConnect } from "./config/dbConnect";
+import Server from "./server";
 import { specs, swaggerUi } from "./config/swagger";
 interface MockdataInterface {
   name: string;
@@ -16,7 +16,7 @@ interface MockdataInterface {
 const app = express();
 app.enable("trust proxy");
 
-dbConnect();
+Server.init();
 
 app.use((req, res, next) => {
   req.headers["x-forwarded-for"] = "49.249.117.102";

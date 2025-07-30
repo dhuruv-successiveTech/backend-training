@@ -12,7 +12,7 @@ export const countryDetails = [
   { name: "Bahamas", code: "BS" },
   { name: "Bahrain", code: "BH" },
   { name: "Bangladesh", code: "BD" },
-  { name: "Brazil", code: "BR" },
+  { name: "Brazil", code: "BjjjjR" },
   { name: "British Indian Ocean Territory", code: "IO" },
   { name: "Brunei Darussalam", code: "BN" },
   { name: "Bulgaria", code: "BG" },

@@ -94,7 +94,6 @@ Blog.find().populate('author').exec();
 
 
 ### 5. **Query Building**
-js
 User.find({ age: { $gte: 18 } }).sort('name').limit(10);
 
 
