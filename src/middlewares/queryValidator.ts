@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { QueryValidationInterface } from "../interface/queryValidation";
-
 const querySchema = Joi.number().required();
 
-class QueryValidation implements QueryValidationInterface {
+class QueryValidation {
   private static instance: QueryValidation;
 
   public static getInstance(): QueryValidation {

@@ -1,8 +1,7 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-import { LocationInterface } from "../interface/location";
 
-class Location implements LocationInterface{
+class Location{
 
   private static instance : Location;
 

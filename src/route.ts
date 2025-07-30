@@ -1,5 +1,6 @@
 import express from "express";
 import { errorRoute, userRoute } from "./routes";
+
 import { HealthCheck } from "./controllers";
 const router = express.Router();
 

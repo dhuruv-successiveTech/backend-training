@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { ValidationInterface } from "../interface/validation";
-
-class Validate implements ValidationInterface {
+class Validate {
   private static instance: Validate;
 
   public static getInstance(): Validate {

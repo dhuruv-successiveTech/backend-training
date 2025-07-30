@@ -11,6 +11,7 @@ import {
 import { UserSchema } from "../utils";
 import Joi from "joi";
 
+
 const userRoute = express.Router();
 
 userRoute.post(
@@ -69,5 +70,6 @@ userRoute.post("/details", (req, res, next) => {
     throw new Error("req.body not found");
   }
 });
+
 
 export { userRoute };

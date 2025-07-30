@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { dataSeedFunction } from "../services/userData";
+import { dataSeedFunction } from "../services";
 
 class UserInfo {
   private static instance: UserInfo;

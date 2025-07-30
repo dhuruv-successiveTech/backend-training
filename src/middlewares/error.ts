@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorInterface } from "../interface/error";
 
-class ApiError implements ErrorInterface {
+class ApiError{
   private static instance : ApiError;
   public static getInstance ():ApiError{
     if(!this.instance){
