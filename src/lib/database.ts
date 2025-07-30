@@ -23,7 +23,6 @@ class DataBase {
   public async seed(): Promise<void> {
     try {
       await CountriesController.postCountries();
-      console.log("Database seeded successfully");
     } catch (error) {
       console.error("Database seeding failed:", error);
     }
