@@ -15,7 +15,11 @@ class CountriesController {
   }
 
   public async postCountries(): Promise<void> {
-    await Countries.seedCountries(country);
+    try {
+      await Countries.seedCountries(country);
+    } catch (error) {
+      throw error
+    }
   }
 }
 
