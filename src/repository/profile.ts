@@ -5,15 +5,14 @@ class ProfileRepo {
   private static instance: ProfileRepo;
 
   public static getInstance(): ProfileRepo {
-    if (!ProfileRepo.instance) {
-      ProfileRepo.instance = new ProfileRepo();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return ProfileRepo.instance;
+    return this.instance;
   }
 
   public async profileRepo(body: IProfile): Promise<IProfile>{
     const data = await profiles.create(body);
-
     return data;
   }
 }

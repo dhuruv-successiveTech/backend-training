@@ -45,7 +45,7 @@ userRoute?.post(
   UserInfo?.info
 );
 
-userRoute.post("/profile", UserProfile.userProfileController);
+userRoute.post("/profile", Validate.validation(UserSchema.profileSchema), UserProfile.userProfileController);
 
 // request with parameter
 const userDetails = Joi.object({
