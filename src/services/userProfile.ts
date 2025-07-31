@@ -6,14 +6,18 @@ class UserProfileService {
   private static instance: UserProfileService;
 
   public static getInstance(): UserProfileService {
-    if (!UserProfileService.instance) {
-      UserProfileService.instance = new UserProfileService();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return UserProfileService.instance;
+    return this.instance;
   }
 
   public async postProfile(data: IProfile):Promise<IProfile> {
-    return ProfileRepo.profileRepo(data);
+    try {
+      return ProfileRepo.profileRepo(data);
+    } catch (error) {
+      throw error
+    }
   }
 }
 
