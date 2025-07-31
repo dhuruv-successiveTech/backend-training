@@ -10,7 +10,7 @@ import {
 } from "../middlewares";
 import { UserSchema } from "../utils";
 import Joi from "joi";
-
+import { UserProfile } from "../controllers";
 
 const userRoute = express.Router();
 
@@ -45,6 +45,8 @@ userRoute?.post(
   UserInfo?.info
 );
 
+userRoute.post("/profile", Validate.validation(UserSchema.profileSchema), UserProfile.userProfileController);
+
 // request with parameter
 const userDetails = Joi.object({
   name: Joi.string().min(2).required(),
@@ -70,6 +72,5 @@ userRoute.post("/details", (req, res, next) => {
     throw new Error("req.body not found");
   }
 });
-
 
 export { userRoute };

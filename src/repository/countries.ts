@@ -1,7 +1,7 @@
 import { ICountries } from "../entities";
 import { countries } from "../models";
 
-export class CountriesRepo {
+class CountriesRepo {
   private static instance: CountriesRepo;
 
   public static getInstance(): CountriesRepo {
@@ -12,15 +12,21 @@ export class CountriesRepo {
   }
 
   public async countriesExist(): Promise<boolean> {
-  const existing = await countries.findOne({});
-  return !!existing;
-}
+    const existing = await countries.findOne({});
+    return !!existing;
+  }
 
   public async countriesPostRepo(
     countrydetails: ICountries[]
   ): Promise<ICountries[]> {
-    const post = new countries({ countries: countrydetails });
-    await post.save();
-    return post.countries;
+    try {
+      const post = new countries({ countries: countrydetails });
+      await post.save();
+      return post.countries;
+    } catch (error) {
+      throw error;
+    }
   }
 }
+
+export default CountriesRepo.getInstance();

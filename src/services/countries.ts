@@ -1,7 +1,5 @@
 import { ICountries } from "../entities";
-import { CountriesRepo } from "../repository/countries";
-
-const countryRepo = CountriesRepo.getInstance();
+import { CountriesRepo } from "../repository/";
 
 class Countries {
   private static instance: Countries;
@@ -12,17 +10,21 @@ class Countries {
     }
     return this.instance;
   }
-  public async seedCountries(
-    countrydetails: ICountries[]
-  ): Promise<void> {
-    const exists = await countryRepo.countriesExist();
-    if (!exists) {
-      await countryRepo.countriesPostRepo(countrydetails);
-      console.log("Countries seeded successfully.");
-    } else {
-      console.log("Countries already exist in the database. Skipping seeding.");
+  public async seedCountries(countrydetails: ICountries[]): Promise<void> {
+    try {
+      const exists = await CountriesRepo.countriesExist();
+      if (!exists) {
+        await CountriesRepo.countriesPostRepo(countrydetails);
+        console.log("Countries seeded successfully.");
+      } else {
+        console.log(
+          "Countries already exist in the database. Skipping seeding."
+        );
+      }
+    } catch (error) {
+      throw error;
     }
   }
 }
 
-export default Countries.getInstance()
+export default Countries.getInstance();

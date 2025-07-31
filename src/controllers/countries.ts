@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+
 import { countryDetails } from "../utils";
 import { Countries } from "../services";
 import { ICountries } from "../entities";
@@ -15,7 +15,11 @@ class CountriesController {
   }
 
   public async postCountries(): Promise<void> {
-    await Countries.seedCountries(country);
+    try {
+      await Countries.seedCountries(country);
+    } catch (error) {
+      throw error
+    }
   }
 }
 
