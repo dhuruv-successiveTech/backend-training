@@ -48,7 +48,7 @@ userRoute?.post(
 
 userRoute.post(
   "/profile",
-  Auth.authMiddleware,
+  Validate.validation(UserSchema.profileSchema),
   UserProfile.userProfileController
 );
 

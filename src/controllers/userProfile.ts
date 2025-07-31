@@ -1,8 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserProfileService } from "../services";
-import { UserSchema } from "../utils";
-
-const joiSchema = UserSchema;
 
 class UserProfile {
   private static instance: UserProfile;
@@ -13,20 +10,16 @@ class UserProfile {
     return this.instance;
   }
 
-  public async userProfileController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { error } = joiSchema.profileSchema.validate(req.body);
-    if (error) {
-      return next(error);
+  public async userProfileController(req: Request, res: Response) {
+    try {
+      const data = await UserProfileService.postProfile(req.body);
+      return res.json({
+        message: "data saved",
+        data: data,
+      });
+    } catch (error) {
+      throw error;
     }
-    const data = await UserProfileService.postProfile(req.body);
-    return res.json({
-      message: "data saved",
-      data: data,
-    });
   }
 
   public async getUsers(req: Request, res: Response, next: NextFunction) {
