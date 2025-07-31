@@ -13,7 +13,11 @@ class UserProfileService {
   }
 
   public async postProfile(data: IProfile):Promise<IProfile> {
-    return ProfileRepo.profileRepo(data);
+    try {
+      return ProfileRepo.profileRepo(data);
+    } catch (error) {
+      throw error
+    }
   }
 }
 
