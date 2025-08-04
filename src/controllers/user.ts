@@ -2,19 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config";
+import { IUser } from "../entities";
+import { UserService } from "../services";
 
-interface UserInterface {
-  userName: string;
-  email: string;
-  mobile: number;
-  password: string;
-  gender: string;
-}
-
-class UserController{
+class UserController {
   private static instance: UserController;
-
-  private users: UserInterface[] = [];
+  private constructor() {}
 
   public static getInstance(): UserController {
     if (!this.instance) {
@@ -24,7 +17,7 @@ class UserController{
   }
 
   public user = (
-    req: Request & { user?: UserInterface },
+    req: Request & { user?: IUser },
     res: Response,
     next: NextFunction
   ): Response<any, Record<string, any>> | void => {
@@ -52,9 +45,10 @@ class UserController{
   ): Promise<Response<any, Record<string, any>> | void> => {
     try {
       const { userName, password } = req?.body;
-      const isExist = this.users.find((u) => u?.userName === userName);
+      const isExist = await UserService.findUser(userName);
       if (!isExist) {
-        return res.status(404).json({ message: "user not found" });
+        res.status(404).json({ message: "user not found" });
+        return;
       }
 
       const valid = await bcrypt.compare(password, isExist?.password);
@@ -78,25 +72,19 @@ class UserController{
     next: NextFunction
   ): Promise<Response<any, Record<string, any>> | void> => {
     try {
-      const { userName, password, email, gender, mobile } = req?.body;
-
-      const isExist = this.users.find((user) => user?.userName === userName);
+      const { userName } = req.body;
+      const isExist = await UserService.findUser(userName);
       if (isExist) {
-        return res.status(400).json({ message: "user already exists" });
+        res.status(400).json({ message: "user already exists" });
+        return;
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = {
-        userName,
-        password: hashedPassword,
-        email,
-        gender,
-        mobile,
-      };
-      this.users.push(newUser);
+      const userPost = await UserService.userRegister(req?.body);
 
-      return res
-        .status(201)
-        .json({ success: true, message: "user registered successfully" });
+      res.status(201).json({
+        success: true,
+        message: "user registered successfully",
+        user: userPost,
+      });
     } catch (error) {
       throw error;
     }

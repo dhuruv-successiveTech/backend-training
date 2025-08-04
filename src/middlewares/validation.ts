@@ -19,6 +19,7 @@ class Validate {
           success: false,
         });
       }
+      else
       next();
     };
   };
