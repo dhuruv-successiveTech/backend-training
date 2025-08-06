@@ -38,9 +38,9 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use(HeaderSecurity.Helmet())
+app.use(HeaderSecurity.Helmet());
 
-app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(specs))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("/api", router);
 
