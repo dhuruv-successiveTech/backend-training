@@ -12,7 +12,7 @@ class Server {
 
   public init = async (): Promise<void> => {
     await Database.connect();
-    await Database.seed();
+    await Database.seed2();
   };
 }
 
