@@ -21,7 +21,7 @@ class AdminAuth {
     req: CustomRequest,
     res: Response,
     next: NextFunction
-  ): Promise<Response<any, Record<string, any>> | void> => {
+  ): Promise<Response | void> => {
     if (req?.user && typeof req.user !== "string") {
       const userId = req.user.id;
       const loggedInUser = await user.findById(userId);

@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import { mockData } from "./utils";
 import { router } from "./route";
 import createError from "http-errors";
-import { ApiError, Header, Limiter } from "./middlewares";
+import { ApiError, Header, HeaderSecurity, Limiter } from "./middlewares";
 import { config } from "./config/config";
 import Server from "./server";
 import { specs, swaggerUi } from "./config/swagger";
@@ -38,7 +38,9 @@ app.get("/user", (req: Request, res: Response) => {
   });
 });
 
-app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(specs))
+app.use(HeaderSecurity.Helmet());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("/api", router);
 

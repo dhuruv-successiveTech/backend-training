@@ -16,7 +16,7 @@ class Auth{
     req: Request & { user?: string | jwt.JwtPayload },
     res: Response,
     next: NextFunction
-  ): Response<any, Record<string, any>> | void => {
+  )=>{
     try {
       const authHeader = req?.headers["authorization"];
       const token = authHeader && authHeader.split(" ")[1];
