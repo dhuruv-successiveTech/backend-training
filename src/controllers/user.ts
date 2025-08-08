@@ -84,7 +84,7 @@ class UserController {
       }
       const userPost = await UserService.userRegister(req?.body);
 
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         message: "user registered successfully",
         user: userPost,

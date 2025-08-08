@@ -22,7 +22,7 @@ class UserProfile {
     }
   }
 
-  public async getUsers(req: Request, res: Response, next: NextFunction) {
+  public async getUsers(req: Request, res: Response) {
     const data = await UserProfileService.getUserProfile();
     return res.json({
       message: "data saved",

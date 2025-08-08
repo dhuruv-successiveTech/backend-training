@@ -9,6 +9,7 @@ class Header{
     return this.instance;
   }
 
+  
   public customHeader = (req: Request, res: Response, next: NextFunction) => {
     res.setHeader("custom-header", config.header);
     return next();
