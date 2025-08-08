@@ -21,6 +21,14 @@ class UserProfile {
       throw error;
     }
   }
+
+  public async getUsers(req: Request, res: Response, next: NextFunction) {
+    const data = await UserProfileService.getUserProfile();
+    return res.json({
+      message: "data saved",
+      data: data,
+    });
+  }
 }
 
 export default UserProfile.getInstance();

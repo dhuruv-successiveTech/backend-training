@@ -19,6 +19,11 @@ class UserProfileService {
       throw error
     }
   }
+
+   public async getUserProfile():Promise<IProfile[]> {
+    return ProfileRepo.getUserRepo();
+  }
+  
 }
 
 export default UserProfileService.getInstance()

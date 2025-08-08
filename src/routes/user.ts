@@ -7,6 +7,7 @@ import {
   QueryValidation,
   Location,
   Auth,
+  AdminAuth,
 } from "../middlewares";
 import { UserSchema } from "../utils";
 import Joi from "joi";
@@ -45,7 +46,18 @@ userRoute?.post(
   UserInfo?.info
 );
 
-userRoute.post("/profile", Validate.validation(UserSchema.profileSchema), UserProfile.userProfileController);
+userRoute.post(
+  "/profile",
+  Validate.validation(UserSchema.profileSchema),
+  UserProfile.userProfileController
+);
+
+userRoute.post(
+  "/admin",
+  Auth.authMiddleware,
+  AdminAuth.adminAuth,
+  UserProfile.getUsers
+);
 
 // request with parameter
 const userDetails = Joi.object({

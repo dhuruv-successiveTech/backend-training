@@ -19,6 +19,11 @@ class ProfileRepo {
       throw error;
     }
   }
+  public async getUserRepo(): Promise<IProfile[]> {
+    const data = await profiles.find({});
+
+    return data;
+  }
 }
 
 export default ProfileRepo.getInstance();

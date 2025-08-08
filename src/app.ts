@@ -6,7 +6,7 @@ import createError from "http-errors";
 import { ApiError, Header, Limiter } from "./middlewares";
 import { config } from "./config/config";
 import Server from "./server";
-
+import { specs, swaggerUi } from "./config/swagger";
 interface MockdataInterface {
   name: string;
   age: number;
@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(Header.customHeader);
-app.use(Limiter.rateLimiter(4, 25000));
+app.use(Limiter.rateLimiter(8, 25000));
 
 const data: MockdataInterface[] = mockData;
 
@@ -37,6 +37,8 @@ app.get("/user", (req: Request, res: Response) => {
     success: true,
   });
 });
+
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(specs))
 
 app.use("/api", router);
 

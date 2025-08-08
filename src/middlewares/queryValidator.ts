@@ -13,14 +13,15 @@ class QueryValidation {
   }
 
   public queryValidator = (req: Request, res: Response, next: NextFunction) => {
-    const param = req?.params?.id;
-    const { error } = querySchema.validate(param);
-    if (req.params.id && error) {
-      throw error;
-    } else {
-      next();
-    }
+   
+      const param = req?.params?.id;
+      const { error } = querySchema.validate(param);
+      if (req.params.id && error) {
+        throw error;
+      } else {
+        next();
+      }
   };
 }
 
-export default QueryValidation.getInstance()
+export default QueryValidation.getInstance();
